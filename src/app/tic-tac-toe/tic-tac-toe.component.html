@@ -1,9 +1,27 @@
-<h4>{{'Player ' + (this.turn ? 2 : 1) + "'s turn"}}</h4>
+
 <div class="container">
   <div class="row">
+  <div class="card col s8 offset-s2 ">
+    <div class="card-content">
+    <div class="card-title">
+      <h3 class="center col s8 offset-s2">{{'Player ' + (this.turn ? 2 : 1) + "'s turn"}}</h3>
+      <div class="card col s2" style="background-color: white">
+        <div class="card-content center-align">
+          <h4>{{(this.turn ? 'O' : 'X')}}</h4>
+        </div>
+      </div>
+    </div>
+
     <span *ngFor="let item of board; let i = index" class="board col s4 center-align" (click)="select(i)">{{['', 'x', 'o'][item]}}</span>
+  </div>
+    <div class="card" style="margin-top: 450px">
+    <div class="card-title">
+      <h5>Last 10 Games:</h5>
+      <h6 *ngFor="let item of last10; let i = index">{{(i+1) + ') ' + last10[i]}}</h6>
+    </div>
+  </div>
+  </div>
   </div>
 </div>
 <br>
-<div>last winner:</div>
-<h4>{{lastWinner}}</h4>
+

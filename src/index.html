@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head>
+<head style="background-color: white">
   <meta charset="utf-8">
   <title>Bkjonnywebsite</title>
   <base href="/">
@@ -30,6 +30,9 @@
   <app-root></app-root>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
   <script type="text/javascript" src="assets/materialize/js/materialize.min.js"></script>
-<script> $('.dropdown-trigger').dropdown();</script>
+<script>
+  $('.dropdown-trigger').dropdown();
+  setTimeout(() => window['$']('ul.dropdown-trigger').dropdown(), 100);
+</script>
 </body>
 </html>
