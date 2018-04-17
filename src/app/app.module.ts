@@ -12,10 +12,12 @@ import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './home/home.component';
 import { GiveawayWheelComponent } from './giveaway-wheel/giveaway-wheel.component';
 import { TicTacToeComponent } from './tic-tac-toe/tic-tac-toe.component';
+import { SnakeComponent } from './snake/snake.component';
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'giveaway-wheel', component: GiveawayWheelComponent },
+  { path: 'snake', component: SnakeComponent },
   { path: 'tic-tac-toe', component: TicTacToeComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full'},
   { path: '**', component: HomeComponent }
@@ -28,7 +30,9 @@ const appRoutes: Routes = [
     // Pages of Website Below
     GiveawayWheelComponent,
     HomeComponent,
+    SnakeComponent,
     TicTacToeComponent
+
   ],
   imports: [
     BrowserModule,
