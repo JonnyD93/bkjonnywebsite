@@ -12,7 +12,10 @@ export class LayoutComponent implements OnInit, AfterViewInit {
   ngOnInit() {
   }
   ngAfterViewInit() {
-    window['$']('.dropdown-trigger').dropdown({hover: true});
+    window['$']('.dropdown-trigger').dropdown({click: true});
+    window['$'](document).ready(function(){
+      window['$']('.sidenav').sidenav();
+    });
   }
 
 }

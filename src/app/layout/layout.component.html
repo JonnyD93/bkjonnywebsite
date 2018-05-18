@@ -1,4 +1,4 @@
-<!-- Nav Bar for website !-->
+<!-- Nav Bar for website
 <ul id="dropdown1" class="dropdown-content">
   <li><a href="#tic-tac-toe">Tic Tac Toe</a></li>
   <li><a href="#giveaway-wheel">Give Away Wheel</a></li>
@@ -13,5 +13,22 @@
       <li><a class="dropdown-trigger" data-target="dropdown1">TS Projects<i class="material-icons right">arrow_drop_down</i></a></li>
     </ul>
   </div>
-</nav>
+</nav>!-->
+<ul id="dropdown1" class="dropdown-content">
+  <li><a href="#tic-tac-toe">Tic Tac Toe</a></li>
+  <li><a href="#giveaway-wheel">Give Away Wheel</a></li>
+  <li><a href="#snake">Snake</a></li>
+</ul>
+<ul id="slide-out" class="sidenav">
+  <a href="#home"><li class="center">
+    <div>
+      <img  id="logo" src="../assets/images/logo/YinYangYong.png">
+    </div>
+  </li></a>
+
+  <li><a href="#about">About Me</a></li>
+  <li><a href="#tutorials">Tutorials</a></li>
+  <li><a class="dropdown-trigger" data-target="dropdown1">TS Projects<i class="material-icons right">arrow_drop_down</i></a></li>
+</ul>
+<a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 <router-outlet></router-outlet>

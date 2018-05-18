@@ -1,0 +1,41 @@
+.card {
+  border-radius: 16px;
+}
+#header {
+  padding: 16px;
+  font-family: 'Open Sans', sans-serif;
+  color: #000;
+  text-decoration: none;
+  font-size: 72px;
+  letter-spacing: -3px;
+  line-height: 1;
+  text-shadow: #fff 3px 2px 0;
+  position: relative;
+}
+.card-title{
+  border-radius: 16px;
+  padding-top: 0px;
+  padding-left: 16px;
+  padding-bottom: -32px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 32px;
+  color: #FFFFFF;
+  background: #000000;
+  box-shadow: 0px 2px 4px grey;
+}
+.card-content {
+  padding-top: 0px;
+}
+.body,height{
+  height: 100%;
+}
+.bg {
+  background-image: url(../../assets/images/parallax/YangBg.png);
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.active{
+  color: black;
+}

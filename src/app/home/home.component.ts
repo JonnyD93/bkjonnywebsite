@@ -5,11 +5,16 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
   constructor() {}
 
-
   ngOnInit() {
+  }
+  ngAfterViewInit(){
+    window['$'](document).ready(function(){
+      window['$']('.parallax').parallax();
+    });
+
   }
 
 }
