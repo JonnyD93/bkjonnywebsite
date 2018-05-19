@@ -3,6 +3,11 @@ max-width: 150px;
   align-content: center;
 }
 .sidenav-trigger{
-  position: absolute;
+  position: fixed;
+  margin: 16px;
+  background-color: white;
+}
+i{
+  color: #000;
 }
 
