@@ -1,30 +1,34 @@
 <div class="bg">
   <div class="container">
     <div class="row">
-      <div class="center-align " style="padding-bottom: 64px">
+      <div class="center-align" style="padding-bottom: 64px">
         <a href="#home" id="header">Black Koi Jonny</a>
       </div>
-      <div class="card hoverable" *ngFor="let card of blogdata">
-        <div class="card-title"><span>{{card.title}}</span>
+      <div class="card hoverable" *ngFor="let card of activePosts">
+        <div class="card-title">
+          <span>{{card.title}}</span>
           <span id="date" class="right">{{card.date}}</span>
         </div>
-        <br>
         <div class="card-content">{{card.content}}</div>
-        <div class="center-align " *ngIf="card.image.length>0">
-          <div class="image center-align hoverable" [ngStyle]="{'background-image': 'url('+card.image+')'}"></div>
+        <div class=" gallery center-align " *ngIf="card.images.length>0">
+          <a *ngFor="let i of card.images" target="_blank" [href]="i"><img class="image hoverable" [src]="i"></a>
+        </div>
+        <div class="center" *ngFor="let embed of card.embedded">
+          <div class="center" *ngIf="embed.length > 0 " >
+            <div>{{embed}}
+            </div>
+          </div>
         </div>
       </div>
-      <!--<ul class="pagination center">
-        <li class="disabled" style="background: white; border-radius: 25px"><a href="#!"><i class="material-icons">chevron_left</i></a>
-        </li>
-        <li class="active hoverable"><a href="#home">1</a></li>
-        <li class="waves-effect hoverable" style="background: white; border-radius: 25px"><a href="#home/2">2</a></li>
-        <li class="waves-effect hoverable" style="background: white; border-radius: 25px"><a href="#home/3">3</a></li>
-        <li class="waves-effect hoverable" style="background: white; border-radius: 25px"><a href="#home/4">4</a></li>
-        <li class="waves-effect hoverable" style="background: white; border-radius: 25px"><a href="#home/5">5</a></li>
-        <li class="waves-effect hoverable" style="background: white; border-radius: 25px"><a href="#home/2"><i
-          class="material-icons">chevron_right</i></a></li>
-      </ul>!-->
     </div>
+    <ul class="pagination center">
+      <li class="waves-effect hoverable" (click)="changePage(false);" *ngIf="pageIndex <= 0 ? null : ' '"><i
+        class="material-icons">chevron_left</i></li>
+      <li class="waves-effect hoverable" *ngFor="let i of NumOfPages" (click)="pageIndex = i; this.updatePage();"><a
+        [class.dissabled]="pageIndex == i ? null : ' '">{{i+1}}</a></li>
+      <li class="waves-effect hoverable" (click)="changePage(true);"
+          *ngIf="pageIndex < (Posts.length/amtPostsShown)-1 ? ' ' : null"><i class="material-icons">chevron_right</i>
+      </li>
+    </ul>
   </div>
 </div>

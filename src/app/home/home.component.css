@@ -15,6 +15,9 @@
   text-shadow: #fff 3px 2px 0;
   position: relative;
 }
+.card-content{
+  margin-top: 16px;
+}
 .card-title{
   border-radius: 16px;
   padding-top: 0px;
@@ -41,12 +44,19 @@
 .body,height{
   height: 100%;
 }
+iframe{
+  alignment: center;
+}
 .bg {
-  background-image: url(../../assets/images/parallax/YangBg.png);
+  background-image: url(../../assets/images/background/YangBg.png);
   height: 100%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+li{
+  background: white;
+  border-radius: 25px
 }
 li.active{
   background-color: black;
