@@ -1,13 +1,13 @@
-#logo{
-max-width: 150px;
-  align-content: center;
+i{
+  color: black !important;
 }
 .sidenav-trigger{
   position: fixed;
   margin: 16px;
   background-color: white;
 }
-i{
-  color: #000;
+#logo{
+max-width: 150px;
+  align-content: center;
 }
 
