@@ -1,0 +1,21 @@
+.card-title {
+  padding-top: 16px;
+  padding-left: 16px;
+}
+input {
+  margin-left: 16px !important;
+}
+textarea {
+  margin-top: 16px;
+  border: none;
+  border-bottom: 1px solid darkgray;
+  height:360px;
+  resize: none;
+}
+textarea:focus {
+  border: none;
+}
+.btn-floating {
+  margin-left: 32px !important;
+  background-color: dimgray;
+}

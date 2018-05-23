@@ -1,0 +1,21 @@
+<nav>
+  <div class="nav-wrapper">
+    <div class="row">
+      <div class="col s6 offset-s1">
+        <a href="#admin" class="breadcrumb">Admin</a>
+        <a href="#" class="breadcrumb">Edit Blog</a>
+        <a href="#blog-creation-page" class="breadcrumb">Create Blog Post</a>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <div class="card hoverable">
+    <div class="card-title"> Create Blog Post </div>
+    <div class="row card-content ">
+      <input placeholder="Title" type="text" [(ngModel)]="title" class="input-field col s10 validate">
+      <div class="btn-floating btn-large waves-effect waves-light" (click)="writeBlogData()"><i class="material-icons">add</i></div>
+      <textarea placeholder="Content" [(ngModel)]="content" class="col s12"></textarea>
+    </div>
+  </div>
+</div>

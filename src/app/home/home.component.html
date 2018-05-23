@@ -20,7 +20,7 @@
     </div>
     <ul class="pagination center">
       <li class="waves-effect hoverable" (click)="changePage(false);" *ngIf="pageIndex <= 0 ? null : ' '"><i class="material-icons">chevron_left</i></li>
-      <li class="waves-effect hoverable" *ngFor="let i of NumOfPages" (click)="pageIndex = i; this.updatePage();"><a [class.dissabled]="pageIndex == i ? null : ' '">{{i+1}}</a></li>
+      <li class="waves-effect hoverable" *ngFor="let i of NumOfPages" (click)="pageIndex = i; this.updatePage();"><a *ngIf="NumOfPages <= 1 ? null : ' '" [class.dissabled]="pageIndex == i ? null : ' '">{{i+1}}</a></li>
       <li class="waves-effect hoverable" (click)="changePage(true);" *ngIf="pageIndex < (Posts.length/amtPostsShown)-1 ? ' ' : null"><i class="material-icons">chevron_right</i></li>
     </ul>
   </div>
