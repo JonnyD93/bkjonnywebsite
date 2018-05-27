@@ -9,26 +9,32 @@ import {DateFormatter} from "@angular/common/src/pipes/deprecated/intl";
 })
 export class BlogCreationComponent implements OnInit, AfterViewInit {
   database: any;
-  title: string;
-  content: string;
-  images: string[];
-  embedded: string[];
+  storageImages: any;
+  title: string = '';
+  content: string = '';
+  file: any;
+  images: {file: any };
+  embedded: string[] = [];
   constructor() {
     this.database = firebase.database();
+    this.storageImages = firebase.storage().ref("images/");
   }
   writeBlogData() {
+    console.log(this.embedded)
     this.database.ref('blog/').push({
       title: this.title,
       date: Date(),
-      content: this.content
+      content: this.content,
+      embedded: this.embedded
     });
+    //this.storageImages.child('images/mountains.jpg').put(this.file);
+    this.title = '';
+    this.content = '';
+    this.embedded = [];
   }
   ngOnInit() {
   }
   ngAfterViewInit(){
-    window['$'](document).ready(function(){
-      window['$']('.datepicker').datepicker();
-    });
   }
 
 }

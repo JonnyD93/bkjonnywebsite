@@ -15,9 +15,11 @@ import { GiveawayWheelComponent } from './giveaway-wheel/giveaway-wheel.componen
 import { TicTacToeComponent } from './tic-tac-toe/tic-tac-toe.component';
 import { SnakeComponent } from './snake/snake.component';
 import { BlogCreationComponent } from './admin/blog-creation-page/blog-creation-page.component';
+import { AboutMeComponent } from './about-me/about-me.component';
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
+  { path: 'about', component: AboutMeComponent },
   { path: 'blog-creation-page', component: BlogCreationComponent },
   { path: 'giveaway-wheel', component: GiveawayWheelComponent },
   { path: 'snake', component: SnakeComponent },
@@ -39,12 +41,12 @@ firebase.initializeApp(config);
     AppComponent,
     LayoutComponent,
     // Pages of Website Below
+    AboutMeComponent,
+    BlogCreationComponent,
     GiveawayWheelComponent,
     HomeComponent,
     SnakeComponent,
-    TicTacToeComponent,
-    BlogCreationComponent
-
+    TicTacToeComponent
   ],
   imports: [
     BrowserModule,

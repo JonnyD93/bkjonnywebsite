@@ -11,11 +11,30 @@
 </nav>
 <div class="container">
   <div class="card hoverable">
-    <div class="card-title"> Create Blog Post </div>
+    <div class="card-title">
+      <span > Create Blog Post </span>
+      <div class="btn waves-effect waves-light" (click)="writeBlogData()">Submit</div>
+    </div>
     <div class="row card-content ">
-      <input placeholder="Title" type="text" [(ngModel)]="title" class="input-field col s10 validate">
-      <div class="btn-floating btn-large waves-effect waves-light" (click)="writeBlogData()"><i class="material-icons">add</i></div>
+      <input placeholder="Title" type="text" [(ngModel)]="title" class="input-field col s11 validate">
       <textarea placeholder="Content" [(ngModel)]="content" class="col s12"></textarea>
+      <form class="col s10" action="#">
+        <div class="file-field input-field">
+          <div class="btn">
+            <span>Images</span>
+            <input type="file" [(ngModel)]="file" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+          </div>
+        </div>
+      </form>
+      <div class="btn waves-effect waves-light col s6" (click)=" this.embedded.push('');">+ Embedded</div>
+      <div class="row">
+        <div *ngFor="let item of embedded; let i = index">
+        <input  placeholder="Embedded" type="text" [(ngModel)]="embedded[i]" class="input-field col s12">
+      </div>
+      </div>
     </div>
   </div>
 </div>

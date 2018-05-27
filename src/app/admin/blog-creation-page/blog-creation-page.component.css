@@ -1,6 +1,7 @@
 .card-title {
   padding-top: 16px;
-  padding-left: 16px;
+  padding-left: 32px;
+  font-size: 30px;
 }
 input {
   margin-left: 16px !important;
@@ -15,7 +16,7 @@ textarea {
 textarea:focus {
   border: none;
 }
-.btn-floating {
-  margin-left: 32px !important;
+.btn {
+  margin-left: 16px !important;
   background-color: dimgray;
 }
