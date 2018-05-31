@@ -12,6 +12,7 @@ export class LayoutComponent implements OnInit, AfterViewInit {
   ngOnInit() {
   }
   ngAfterViewInit() {
+    document.body.style.backgroundColor = 'hsl(0, 0%, 00%)';
     window['$']('.dropdown-trigger').dropdown({click: true});
     window['$'](document).ready(function(){
       window['$']('.sidenav').sidenav();

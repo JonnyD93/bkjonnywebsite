@@ -1,10 +1,13 @@
-<div class="bg">
+<div class="parallax-container">
+  <div class="parallax"><img src="../../assets/images/backgrounds/YangBg.png"/>
+    <div class="center-align header-container">
+      <a href="#home" class="header" >Jonny Deates</a>
+    </div>
+  </div>
+</div>
   <div class="container">
     <div class="row">
-      <div class="center-align" style="padding-bottom: 64px">
-        <a href="#home" id="header">Black Koi Jonny</a>
-      </div>
-      <div class="card hoverable" *ngFor="let card of activePosts; let x = index" [style.animation-delay]="x/2+'s'" >
+      <div class="card hoverable" *ngFor="let card of activePosts; let x = index" [style.animation-delay]="x/2+'s'">
         <div class="card-title">
           <span>{{card.title}}</span>
           <span id="date" class="right">{{card.date}}</span>
@@ -14,14 +17,14 @@
           <a *ngFor="let i of card.images" target="_blank" [href]="i"><img class="image hoverable" [src]="i"></a>
         </div>
         <div class="center" *ngFor="let embed of card.embedded; let y = index">
-          <div *ngIf="embed.length > 0" [id]="'embedded'+x+y" >{{this.updateEmbedded(embed, x,y)}}</div>
+          <div *ngIf="embed.length > 0" [id]="'embedded'+x+y">{{this.updateEmbedded(embed, x,y)}}</div>
         </div>
       </div>
     </div>
     <ul class="pagination center" *ngIf="NumOfPages <= 1 ? null : ' '">
       <li class="waves-effect hoverable" (click)="changePage(false);" *ngIf="pageIndex <= 0 ? null : ' '"><i class="material-icons">chevron_left</i></li>
-      <li class="waves-effect hoverable" *ngFor="let i of NumOfPages" (click)="pageIndex = i; this.updatePage();"><a  [class.dissabled]="pageIndex == i ? null : ' '">{{i+1}}</a></li>
-      <li class="waves-effect hoverable" (click)="changePage(true);" *ngIf="pageIndex < (Posts.length/amtPostsShown)-1 ? ' ' : null"><i class="material-icons">chevron_right</i></li>
+      <li class="waves-effect hoverable" *ngFor="let i of NumOfPages" (click)="pageIndex = i; this.updatePage();"><a [class.dissabled]="pageIndex == i ? null : ' '">{{i+1}}</a></li>
+      <li class="waves-effect hoverable" (click)="changePage(true);" *ngIf="pageIndex < (Posts.length/amtPostsShown)-1 ? ' ' : null"><i class="material-icons">chevron_right</i>
+      </li>
     </ul>
   </div>
-</div>

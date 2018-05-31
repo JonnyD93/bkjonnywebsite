@@ -36,6 +36,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     this.pageIndex = 0; // The page index is the page we are on.
     this.updatePage();
+    window['$'](document).ready(()=>{
+      window['$']('.parallax').parallax();
+    });
   }
 
   ngOnInit() {
