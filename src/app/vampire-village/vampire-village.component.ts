@@ -14,7 +14,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   room: any[] = [];
   characterDisplays: any[] = [];
   report: any[] = [];
-
+  scrolled: boolean = false;
 
   constructor() {
     this.characters.push({
@@ -38,23 +38,32 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     this.createVampires(20);
     for (let character of this.characters)
       this.characterDisplays.push(Object.keys(character))
-
+    this.sortTurns();
   }
 
   ngOnInit() {
   }
 
-  ngAfterViewInit(){
-    this.turnSystem();
+  ngAfterViewInit() {
+    window['$']("#reportbox").on('scroll', ()=> {
+      this.scrolled = true;
+    });
   }
+
+
+  updateScroll() {
+      const element = document.getElementById("reportbox");
+      element.scrollTop = element.scrollHeight;
+  }
+
   createVampires(y) {
     for (let x = 0; x < (this.rndInt(y) ) + 1; x++)
       this.vampires.push({
         name: "Basic Vampire",
-        health: this.rndInt(60),
-        attack: this.rndInt(5),
+        health: this.rndInt(200),
+        attack: this.rndInt(10),
         defence: this.rndInt(3),
-        accuracy: this.rndInt(30),
+        accuracy: this.rndInt(100),
         agility: this.rndInt(15),
         side: 'vampire'
       })
@@ -66,12 +75,10 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
 
   sortTurns() {
     this.room = [];
-    for (let vampire of this.vampires) {
+    for (let vampire of this.vampires)
       this.room.push(vampire)
-    }
-    for (let character of this.characters) {
+    for (let character of this.characters)
       this.room.push(character)
-    }
     this.room.sort((a, b) => {
       if (a.agility < b.agility)
         return 1;
@@ -81,73 +88,61 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     })
   }
 
-  checkDead(stat: { health: number }) {
-    if (stat.health < 1)
-      return true;
-    return false;
-  }
-
   damageCalculation(attacker: any, defender: any) {
     if ((attacker.accuracy - Math.round(((defender.agility + attacker.accuracy) / attacker.accuracy))) >= this.rndInt(101)) {
       let defend = this.rndInt(defender.defence)
-      defender.health -= attacker.attack - defend;
-      this.report.push(attacker.name + ' hit ' + defender.name + ' for ' + (attacker.attack - defend))
+      if ((attacker.attack - defend) > 0)
+        return ( attacker.attack - defend);
     }
+    return 0;
+  }
+
+  updateReport(Missed: boolean, Defender?: string, damage?: number) {
+    if (Missed)
+      this.report.push(this.room[0].name + ' Missed.');
     else
-      this.report.push(attacker.name + ' Missed.')
+      this.report.push(this.room[0].name + ' hit ' + Defender + ' for ' + damage);
   }
 
-  attack(index: number) {
-    this.sortTurns();
-    this.report = [];
-    for (let character of this.room) {
-      console.log(character)
-      if (character.side === 'human') {
-        if ((character.accuracy - Math.round(((this.vampires[index].agility + character.accuracy) / character.accuracy))) >= this.rndInt(101)) {
-          let defend = this.rndInt(this.vampires[index].defence)
-          this.vampires[index].health -= character.attack - defend;
-          this.report.push(character.name + ' hit ' + this.vampires[index].name + ' for ' + (character.attack - defend))
-        }
-        else
-          this.report.push(character.name + ' Missed.')
-        if (this.checkDead(this.vampires[index]))
-          this.vampires.splice(index, 1)
-      }
-      if (character.side === 'vampire') {
-        if ((character.accuracy - Math.round(((this.characters[0].agility + character.accuracy) / character.accuracy))) >= this.rndInt(101)) {
-          let defend = this.rndInt(this.characters[0].defence);
-          this.characters[0].health -= character.attack - defend;
-          this.report.push(character.name + ' hit ' + this.characters[0].name + ' for ' + (character.attack - defend))
-        }
-        else
-          this.report.push(character.name + ' Missed.')
+  attack(i: number) {
+    let damage = this.damageCalculation(this.room[0], this.vampires[i]);
+    if (damage == 0) {
+      this.updateReport(true)
+    }
+    else {
+      this.vampires[i].health -= damage;
+      this.updateReport(false, this.vampires[i].name,damage)
+      window['M'].toast({html: (this.room[0].name+' hit '+this.vampires[i].name+' for '+damage + ' damage'), classes: 'green'})
+      if (this.vampires[i].health < 1) {
+        this.vampires.splice(i, 1);
+        window['M'].toast({html: (this.vampires[i].name+' died'), classes: 'black'})
       }
     }
+    this.room.splice(0, 1);
+    this.updateScroll();
+    this.turnSystem();
   }
 
-  turnSystem(){
-    this.report = [];
-    if(this.room.length===0){
+  turnSystem() {
+    if (this.room.length === 0) {
       this.sortTurns();
       this.turnSystem();
     }
-    if(this.room.length >= 1 && this.room[0].side === 'human'){
-      for(let vampire of this.vampires){
-        document.getElementById('enemy'+ this.vampires.indexOf(vampire)).addEventListener("click", () => {
-          this.damageCalculation(this.room[0],vampire);
-          if (this.checkDead(vampire))
-            this.vampires.splice(this.vampires.indexOf(vampire), 1);
-          this.room.splice(0,1);
-          this.turnSystem();
-        })
-      }
+    if (this.room.length >= 1 && this.room[0].side === 'human') {
     }
-    if(this.room.length >= 1 && this.room[0].side === 'vampire'){
-      this.damageCalculation(this.room[0], this.characters[Math.floor(Math.random()*this.characters.length)]);
-      this.room.splice(0,1);
+    if (this.room.length >= 1 && this.room[0].side === 'vampire') {
+      let index = Math.floor(Math.random() * this.characters.length);
+      let damage = this.damageCalculation(this.room[0], this.characters[index]);
+      if (damage == 0)
+        this.updateReport(true);
+      else {
+        this.characters[index].health -= damage;
+        window['M'].toast({html: (this.characters[index].name+' took '+damage + ' damage'), classes: 'red'})
+        this.updateReport(false, this.characters[index].name, damage);
+      }
+      this.room.splice(0, 1);
       this.turnSystem();
     }
-
-    //
+    this.updateScroll();
   }
 }

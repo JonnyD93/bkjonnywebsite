@@ -29,3 +29,7 @@
 .stats{
   margin-top: 8px;
 }
+.toast-hit{
+  color: red !important;
+  background: #a50000 !important;
+}

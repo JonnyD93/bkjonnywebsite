@@ -2,7 +2,7 @@
   <div class="row">
     <div style="padding-top: 32px;">
       <div class="col s2" *ngFor="let vampire of vampires; let i = index" >
-        <button class="btn vampire" *ngIf="vampire.health > 0" [id]="'enemy'+i">{{vampire.health}}</button>
+        <div class="btn vampire" *ngIf="vampire.health > 0" (click)="attack(i)">{{vampire.health}}</div>
       </div>
     </div>
   </div>
@@ -16,7 +16,7 @@
       </div>
   </div>
   </div>
-  <div class="report-box">
+  <div class="report-box" id="reportbox">
     <div class="message" *ngFor="let action of report">
       {{action}}
     </div>
