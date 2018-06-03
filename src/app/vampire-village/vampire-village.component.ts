@@ -15,6 +15,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   characterDisplays: any[] = [];
   report: any[] = [];
   scrolled: boolean = false;
+  hits = [];
 
   constructor() {
     this.characters.push({
@@ -104,14 +105,16 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       this.report.push(this.room[0].name + ' hit ' + Defender + ' for ' + damage);
   }
 
-  attack(i: number) {
+  attack(event, i: number) {
     let damage = this.damageCalculation(this.room[0], this.vampires[i]);
     if (damage == 0) {
+      this.spawnStatus(event,"Missed");
       this.updateReport(true)
     }
     else {
       this.vampires[i].health -= damage;
-      this.updateReport(false, this.vampires[i].name,damage)
+      this.updateReport(false, this.vampires[i].name,damage);
+      this.spawnStatus(event,""+damage);
       window['M'].toast({html: (this.room[0].name+' hit '+this.vampires[i].name+' for '+damage + ' damage'), classes: 'green'})
       if (this.vampires[i].health < 1) {
         this.vampires.splice(i, 1);
@@ -122,6 +125,16 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     this.updateScroll();
     this.turnSystem();
   }
+
+  spawnStatus = (event, statusText) => {
+    let element = event.target;
+    let obj = {
+      styles: {left: event.clientX +10+ 'px',top:event.clientY + 'px'},
+      statusText
+    };
+    this.hits.push(obj)
+    setTimeout(()=>this.hits.splice(this.hits.indexOf(obj), 1), 1200);
+  };
 
   turnSystem() {
     if (this.room.length === 0) {
