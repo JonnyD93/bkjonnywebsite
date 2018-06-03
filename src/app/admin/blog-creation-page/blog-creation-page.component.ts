@@ -31,7 +31,7 @@ export class BlogCreationComponent implements OnInit, AfterViewInit {
     for (let i = 0; i < this.images.length; i++)
       this.images[i] = (<HTMLInputElement>document.getElementById(i + 'image')).value
     for (let i = 0; i < this.embedded.length; i++) {
-      let x = (<HTMLInputElement>document.getElementById(i + 'embedded')).value.toString();
+      let x = (<HTMLInputElement>document.getElementById(i + 'embedded')).value;
       this.embedded[i] = x;
     }
   }

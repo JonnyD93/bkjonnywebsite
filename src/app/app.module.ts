@@ -16,6 +16,7 @@ import { TicTacToeComponent } from './tic-tac-toe/tic-tac-toe.component';
 import { SnakeComponent } from './snake/snake.component';
 import { BlogCreationComponent } from './admin/blog-creation-page/blog-creation-page.component';
 import { AboutMeComponent } from './about-me/about-me.component';
+import { VampireVillageComponent } from './vampire-village/vampire-village.component';
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -24,6 +25,7 @@ const appRoutes: Routes = [
   { path: 'giveaway-wheel', component: GiveawayWheelComponent },
   { path: 'snake', component: SnakeComponent },
   { path: 'tic-tac-toe', component: TicTacToeComponent },
+  { path: 'vampire-village', component: VampireVillageComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full'},
   { path: '**', component: HomeComponent }
 ];
@@ -46,7 +48,8 @@ firebase.initializeApp(config);
     GiveawayWheelComponent,
     HomeComponent,
     SnakeComponent,
-    TicTacToeComponent
+    TicTacToeComponent,
+    VampireVillageComponent
   ],
   imports: [
     BrowserModule,

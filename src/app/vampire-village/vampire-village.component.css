@@ -1,0 +1,31 @@
+.character-stat{
+  margin-top:45%;
+  margin-right: 16px;
+  background-color: white;
+}
+.vampire{
+  max-width: 64px;
+  border-radius: 16px;
+  background-color: gray;
+}
+.table{
+  padding-left: 16px;
+  padding-right: 16px;
+}
+.report-box{
+  height: 200px;
+  overflow: auto;
+  border-radius: 8px;
+  position: absolute;
+  right: 0;
+  /* top: 0px; */
+  bottom: 0;
+  background: #dde9f3;
+}
+.message{
+  margin-right: 4px;
+  margin-bottom: 4px;
+}
+.stats{
+  margin-top: 8px;
+}
