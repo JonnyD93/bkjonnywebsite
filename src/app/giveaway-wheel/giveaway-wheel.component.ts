@@ -59,7 +59,7 @@ export class GiveawayWheelComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-      setTimeout(() => window['$']('ul.tabs').tabs(), 100);
+    setTimeout(() => window['$']('ul.tabs').tabs(), 100);
       document.body.style.backgroundColor = '#00b140';
       this.canvas = <HTMLCanvasElement>document.getElementById('cnvs');
       this.ctx = this.canvas.getContext('2d');

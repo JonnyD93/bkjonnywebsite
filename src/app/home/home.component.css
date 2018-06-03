@@ -51,7 +51,7 @@ li.active{
   font-family: 'Open Sans', sans-serif;
   font-size: 32px;
   color: #FFFFFF;
-  background: hsl(0, 0%, 10%);
+  background: #5388ab;
   box-shadow: 0px 2px 4px grey;
 }
 .header {
@@ -63,8 +63,7 @@ li.active{
   line-height: 1;
   text-shadow: hsl(0, 0%, 00%) 3px 2px 0;
   position: relative;
-  background-color: rgb(247, 255, 24);
-  border-radius: 25px;
+  text-underline: #000000;
 }
 .header-container{
   margin-top: 100px;

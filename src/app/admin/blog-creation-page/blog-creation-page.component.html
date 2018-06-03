@@ -11,29 +11,43 @@
 </nav>
 <div class="container">
   <div class="card hoverable">
-    <div class="card-title">
-      <span > Create Blog Post </span>
+    <div class="cardtitle">
+      <span> Create Blog Post </span>
       <div class="btn waves-effect waves-light" (click)="writeBlogData()">Submit</div>
+      <div class="btn waves-effect waves-light" (click)="createTest()">Test</div>
     </div>
     <div class="row card-content ">
       <input placeholder="Title" type="text" [(ngModel)]="title" class="input-field col s11 validate">
       <textarea placeholder="Content" [(ngModel)]="content" class="col s12"></textarea>
-      <form class="col s10" action="#">
-        <div class="file-field input-field">
-          <div class="btn">
-            <span>Images</span>
-            <input type="file" [(ngModel)]="file" [ngModelOptions]="{standalone: true}">
-          </div>
-          <div class="file-path-wrapper">
-            <input class="file-path validate" type="text">
+      <div class="btn waves-effect waves-light col s5" (click)=" this.images.push('');">+ Images</div>
+      <div class="row">
+        <div *ngFor="let item of images; let i = index">
+          <input placeholder="Image Source" type="text" [id]="i+'image'" class="input-field col s12">
+        </div>
+        <div class="btn waves-effect waves-light col s5" (click)=" this.embedded.push('');">+ Embedded</div>
+        <div class="row">
+          <div *ngFor="let item of embedded; let i = index">
+            <input placeholder="Embedded" type="text" [id]="i+'embedded'" class="input-field col s12">
           </div>
         </div>
-      </form>
-      <div class="btn waves-effect waves-light col s6" (click)=" this.embedded.push('');">+ Embedded</div>
-      <div class="row">
-        <div *ngFor="let item of embedded; let i = index">
-        <input  placeholder="Embedded" type="text" [(ngModel)]="embedded[i]" class="input-field col s12">
       </div>
+    </div>
+  </div>
+</div>
+<div class="container" *ngIf="test">
+  <div class="row">
+    <div class="card hoverable" *ngFor="let card of postExample; let x = index">
+      <div class="card-title">
+        <span>{{card.title}}</span>
+        <span id="date" class="right">{{card.date}}</span>
+      </div>
+      <div class="card-content">{{card.content}}</div>
+      <!-- <div class=" gallery center-align " *ngIf="images.length > 0">
+         <a *ngFor="let image of images" target="_blank" [href]="image"><img class="image hoverable" [src]="image"></a>
+       </div>!-->
+
+      <div class="center" *ngFor="let embed of card.embedded; let y = index">
+        <div *ngIf="embed.length > 0" [id]="'embedded'+x+y">{{this.updateEmbedded(embed, x,y)}}</div>
       </div>
     </div>
   </div>

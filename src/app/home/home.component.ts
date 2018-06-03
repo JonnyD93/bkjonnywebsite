@@ -27,9 +27,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
           title: snapshot.val()[key].title,
           date: this.formatDate(snapshot.val()[key].date),
           content: snapshot.val()[key].content,
-          images: [],
+          images: snapshot.val()[key].images,
           embedded: snapshot.val()[key].embedded
         });
+        console.log(this.Posts);
       }
       this.updatePage();
     });
@@ -42,9 +43,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+   window['$']('.parallax').parallax();
   }
 
   ngAfterViewInit() {
+
   }
 
   updatePage() {
