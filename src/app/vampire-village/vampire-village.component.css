@@ -1,7 +1,10 @@
 .character-stat{
-  margin-top:45%;
+  margin-top:40%;
   margin-right: 16px;
   background-color: white;
+}
+.currentTurn{
+
 }
 .vampire{
   max-width: 64px;
@@ -29,17 +32,13 @@
 .stats{
   margin-top: 8px;
 }
-.toast-hit{
-  color: red !important;
-  background: #a50000 !important;
-}
 .status{
   display: block;
   position: absolute;
-  color: darkred;
+  color: white;
   background-color: rgba(0,0,0,0.7);
   padding: 5px;
-  text-shadow: 1px 1px red;
+  text-shadow: 1px 1px gray;
   font-size: 30px;
   font-weight: bold;
   border-radius: 7px;
@@ -54,9 +53,9 @@
     transform: translateY(-100px);
   }
   0%, 20%, 40%, 60%, 80%, 100%{
-    color: darkred;
+    color: gray;
   }
   10%, 30%, 50%, 70%, 90%{
-    color: red;
+    color: white;
   }
 }

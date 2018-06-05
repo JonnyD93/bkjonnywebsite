@@ -52,10 +52,10 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   }
 
 
-  updateScroll() {
+  /*updateScroll() {
       const element = document.getElementById("reportbox");
       element.scrollTop = element.scrollHeight;
-  }
+  }*/
 
   createVampires(y) {
     for (let x = 0; x < (this.rndInt(y) ) + 1; x++)
@@ -109,12 +109,12 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     let damage = this.damageCalculation(this.room[0], this.vampires[i]);
     if (damage == 0) {
       this.spawnStatus(event,"Missed");
-      this.updateReport(true)
+      this.updateReport(true);
     }
     else {
       this.vampires[i].health -= damage;
       this.updateReport(false, this.vampires[i].name,damage);
-      this.spawnStatus(event,""+damage);
+      this.spawnStatus(event,damage);
       window['M'].toast({html: (this.room[0].name+' hit '+this.vampires[i].name+' for '+damage + ' damage'), classes: 'green'})
       if (this.vampires[i].health < 1) {
         this.vampires.splice(i, 1);
@@ -122,12 +122,11 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       }
     }
     this.room.splice(0, 1);
-    this.updateScroll();
+    //this.updateScroll();
     this.turnSystem();
   }
 
   spawnStatus = (event, statusText) => {
-    let element = event.target;
     let obj = {
       styles: {left: event.clientX +10+ 'px',top:event.clientY + 'px'},
       statusText
@@ -156,6 +155,6 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       this.room.splice(0, 1);
       this.turnSystem();
     }
-    this.updateScroll();
+    //this.updateScroll();
   }
 }

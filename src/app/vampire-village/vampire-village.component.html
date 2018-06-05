@@ -1,26 +1,26 @@
 <div class="container">
   <div class="row">
     <div style="padding-top: 32px;">
-      <div class="col s2" *ngFor="let vampire of vampires; let i = index" >
+      <div class="col s2" *ngFor="let vampire of vampires; let i = index">
         <div class="btn vampire" *ngIf="vampire.health > 0" (click)="attack($event,i)">{{vampire.health}}</div>
       </div>
     </div>
   </div>
   <div class="row">
-  <div class="card hoverable character-stat col s3" *ngFor="let item of characterDisplays; let i = index">
-    <div class="card-title" *ngFor="let itemX of item">
-      <span *ngIf="itemX =='name'">{{characters[i][itemX]}}</span>
-    </div>
+    <div class="card currentTurn hoverable character-stat col s3" *ngFor="let item of characterDisplays; let i = index">
+      <div class="card-title" *ngFor="let itemX of item">
+        <span *ngIf="itemX =='name'">{{characters[i][itemX]}}</span>
+      </div>
       <div class="stats" *ngFor="let itemX of item">
         <div *ngIf="itemX != 'side'&& itemX != 'name'">{{itemX + ": "+ characters[i][itemX]}}</div>
       </div>
+    </div>
   </div>
-  </div>
-  <div class="report-box" id="reportbox">
+  <!--<div class="report-box" id="reportbox">
     <div class="message" *ngFor="let action of report">
       {{action}}
     </div>
-  </div>
+  </div>-->
 </div>
 <span class="status" *ngFor="let hit of hits" [ngStyle]="hit.styles">{{hit.statusText}}
 </span>
