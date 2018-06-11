@@ -10,13 +10,12 @@ label > input + div{
   cursor:pointer;
   background-color: gray;
   text-transform: unset;
+  margin-bottom: 16px;
 }
 label > input:checked + div{
   background-color: green;
+  margin-bottom: 16px;
   text-transform: uppercase;
-}
-.btn{
-
 }
 .character-stat{
   margin-top:30%;
@@ -27,6 +26,11 @@ label > input:checked + div{
   position: fixed;
   bottom: 0%;
   background-color: white;
+}
+.player-ui{
+  padding-left: 16px;
+  font-size: 32px;
+  color: black;
 }
 .startTurn{
   animation: turnStart 1s forwards;
@@ -62,11 +66,12 @@ label > input:checked + div{
   margin-bottom: 4px;
 }
 .progress{
-  background-color: black;
+  background-color: red;
   height: 8px;
+  margin-top: -75px;
 }
 .progress .determinate {
-  background-color: #ff0000;
+  background-color: green;
 }
 .stats{
   margin-top: 8px;

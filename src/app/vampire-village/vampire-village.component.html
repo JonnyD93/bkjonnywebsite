@@ -19,10 +19,16 @@
     </div>
   </div>
 </div>
-<nav class="abilities-ui">
-  <label *ngFor="let item of characters[0].abilities">
-    <input class="with-gap" name="abilities" type="radio" checked/>
-    <div class="btn">{{item.name}}</div>
-  </label>
-</nav>
+<div *ngFor="let character of characters; let i = index">
+  <nav class="abilities-ui" *ngIf="checkPlayerActive(character)">
+    <span class="player-ui">{{character.name}}</span>
+    <label *ngFor="let ability of character.abilities">
+      <input class="with-gap" name="abilities" type="radio" checked/>
+      <div class="btn">{{ability.name}}</div>
+    </label>
+    <div class="progress">
+      <div class="determinate" [style.width]="(healthCalculation(character.health,charactersHealth[i]))+'%'"></div>
+    </div>
+  </nav>
+</div>
 <span class="status" *ngFor="let hit of hits" [ngStyle]="hit.styles">{{hit.statusText}}</span>

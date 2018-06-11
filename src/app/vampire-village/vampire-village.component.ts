@@ -13,6 +13,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   ability: {name:string, damageMultiplier: number, effect: {name:string, type:string, variable: number, length: number}, effectChance: number, coolDown: number, currentCoolDown: number}[] = [];
   vampires: { health: number, attack: number, defence: number, accuracy, agility: number, side: string, name: string }[] = [];
   characters: { health: number, attack: number, defence: number, accuracy, agility: number, side: string, name: string, abilities: any[] }[] = [];
+  charactersHealth: any[] = [];
   room: any[] = [];
   characterDisplays: any[] = [];
   report: any[] = [];
@@ -62,8 +63,10 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     });
     this.createVampires(20);
     for (let character of this.characters)
-      this.characterDisplays.push(Object.keys(character))
-
+      this.characterDisplays.push(Object.keys(character));
+    for (let character of this.characters)
+      this.charactersHealth.push(character.health);
+    this.sortTurns();
   }
 
   ngOnInit() {
@@ -75,16 +78,18 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     });
     this.startGame();
   }
-  addAbility(character,abilityName){
-    if(abilityName==='')
-      character.abilities.push(this.ability[0]);
-    if(abilityName==='Venom Attack')
-      character.abilities.push(this.ability[1]);
-  }
   /*updateScroll() {
       const element = document.getElementById("reportbox");
       element.scrollTop = element.scrollHeight;
   }*/
+  checkPlayerActive(character){
+    return this.room[0].side === 'human' && this.room[0].name === character.name;
+  }
+
+  healthCalculation(currentHeatlh,maxHealth){
+    console.log(currentHeatlh,maxHealth)
+    return Math.round((currentHeatlh/maxHealth)*100);
+  }
 
   createVampires(y) {
     for (let x = 0; x < (this.rndInt(y) ) + 1; x++)
@@ -102,7 +107,6 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
    rndInt(x: number) {
     return Math.round(Math.random() * x)
   }
-
   sortTurns() {
     this.room = [];
     for (let vampire of this.vampires)
@@ -135,7 +139,6 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   }
 
   startGame() {
-    this.sortTurns();
     if (this.room[0].side === 'human') {
       document.getElementById( this.room[0].name + 'id').classList.add('startTurn');
     }
@@ -155,9 +158,10 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   }
 
   attack(event, i: number) {
-    console.log(window['$'] ('input[name=abilities]'));
+    console.log(this.room);
+    console.log(this.characters);
     let radioButtons = window['$'] ('input[name=abilities]');
-    console.log(window['$'](":radio[name='abilities']").index(window['$'](":radio[name='abilities']:checked"));
+    console.log(window['$'](":radio[name='abilities']").index(window['$'](":radio[name='abilities']:checked")));
     if(this.room[0].side  === 'human') {
       document.getElementById(this.room[0].name + 'id').classList.remove('startTurn');
       document.getElementById(this.room[0].name + 'id').classList.add('endTurn');
