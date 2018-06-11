@@ -21,6 +21,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   hits = [];
 
   constructor(private abilitiesService: AbilitiesService) {
+    //All character Data will be received from a Database 
     this.characters.push({
       name: 'Jonny',
       health: 100,
@@ -73,24 +74,29 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    window['$']("#reportbox").on('scroll', ()=> {
-      this.scrolled = true;
-    });
     this.startGame();
   }
-  /*updateScroll() {
-      const element = document.getElementById("reportbox");
-      element.scrollTop = element.scrollHeight;
-  }*/
+
   checkPlayerActive(character){
     return this.room[0].side === 'human' && this.room[0].name === character.name;
   }
 
-  healthCalculation(currentHeatlh,maxHealth){
-    console.log(currentHeatlh,maxHealth)
+  healthCalculation(currentHeatlh, maxHealth){
     return Math.round((currentHeatlh/maxHealth)*100);
   }
 
+   rndInt(x: number) {
+    return Math.round(Math.random() * x)
+  }
+
+  updateReport(Missed: boolean, Defender?: string, damage?: number) {
+    if (Missed)
+      this.report.push(this.room[0].name + ' Missed.');
+    else
+      this.report.push(this.room[0].name + ' hit ' + Defender + ' for ' + damage);
+  }
+
+  //Planned Removal
   createVampires(y) {
     for (let x = 0; x < (this.rndInt(y) ) + 1; x++)
       this.vampires.push({
@@ -104,9 +110,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       })
   }
 
-   rndInt(x: number) {
-    return Math.round(Math.random() * x)
-  }
+  //Sorts the turns based on Agility
   sortTurns() {
     this.room = [];
     for (let vampire of this.vampires)
@@ -122,6 +126,8 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     });
   }
 
+
+  //Needs a lot of work
   damageCalculation(attacker: any, defender: any) {
     if ((attacker.accuracy - Math.round(((defender.agility + attacker.accuracy) / attacker.accuracy))) >= this.rndInt(101)) {
       let defend = this.rndInt(defender.defence);
@@ -131,12 +137,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     return 0;
   }
 
-  updateReport(Missed: boolean, Defender?: string, damage?: number) {
-    if (Missed)
-      this.report.push(this.room[0].name + ' Missed.');
-    else
-      this.report.push(this.room[0].name + ' hit ' + Defender + ' for ' + damage);
-  }
+
 
   startGame() {
     if (this.room[0].side === 'human') {
