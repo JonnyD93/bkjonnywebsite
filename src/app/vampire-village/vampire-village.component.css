@@ -1,10 +1,42 @@
+label{
+  padding-left: 16px;
+
+}
+label > input{
+  visibility: hidden;
+  position: absolute;
+}
+label > input + div{
+  cursor:pointer;
+  background-color: gray;
+  text-transform: unset;
+}
+label > input:checked + div{
+  background-color: green;
+  text-transform: uppercase;
+}
+.btn{
+
+}
 .character-stat{
-  margin-top:40%;
+  margin-top:30%;
   margin-right: 16px;
   background-color: white;
 }
-.currentTurn{
-
+.abilities-ui{
+  position: fixed;
+  bottom: 0%;
+  background-color: white;
+}
+.startTurn{
+  animation: turnStart 1s forwards;
+}
+.endTurn{
+  animation: turnEnd 1s;
+}
+.playerDead{
+  animation-delay: 1s;
+  animation: playerDeath 3s forwards;
 }
 .vampire{
   max-width: 64px;
@@ -29,6 +61,13 @@
   margin-right: 4px;
   margin-bottom: 4px;
 }
+.progress{
+  background-color: black;
+  height: 8px;
+}
+.progress .determinate {
+  background-color: #ff0000;
+}
 .stats{
   margin-top: 8px;
 }
@@ -45,17 +84,50 @@
   animation: status 1.3s;
 }
 
-@keyframes status{
+
+@keyframes status {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100px);
+  }
+  0%, 20%, 40%, 60%, 80%, 100% {
+    color: gray;
+  }
+  10%, 30%, 50%, 70%, 90% {
+    color: white;
+  }
+}
+@keyframes turnStart{
   0%{
+    box-shadow: 0px 0px 0px gold;
     transform: translateY(0);
   }
   100%{
-    transform: translateY(-100px);
+    box-shadow: 0px 0px 20px gold;
+    transform: translateY(-32px);
   }
-  0%, 20%, 40%, 60%, 80%, 100%{
-    color: gray;
+}
+@keyframes turnEnd{
+  0%{
+    box-shadow: 0px 0px 20px gold;
+    transform: translateY(-32px);
   }
-  10%, 30%, 50%, 70%, 90%{
-    color: white;
+  100%{
+    box-shadow: 0px 0px 0px gold;
+    transform: translateY(0);
+  }
+}
+@keyframes playerDeath{
+  10%{
+    transform: translateY(10px) rotate(144deg);
+  }
+  40%{
+    transform: translateY(-60px) translateX(60px) rotate(576deg);
+  }
+  100%{
+    background-color: black;
+    transform: translateY(300px) translateX(60px) rotate(1440deg);
   }
 }

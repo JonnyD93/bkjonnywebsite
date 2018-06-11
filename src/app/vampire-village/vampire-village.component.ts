@@ -1,4 +1,5 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AbilitiesService} from "../services/abilities.service";
 
 @Component({
   selector: 'app-vampire-village',
@@ -7,25 +8,27 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
 })
 export class VampireVillageComponent implements OnInit, AfterViewInit {
 
-  playerAttributes: { level: number, experience: number, inventory: any[], stats: { health: number, defence: number, attack: number, accuracy: number } }
-
+  playerAttributes: { level: number, experience: number, inventory: any[], stats: { health: number, defence: number, attack: number, accuracy: number } };
+  effect: {name:string, type:string, variable: number, length: number};
+  ability: {name:string, damageMultiplier: number, effect: {name:string, type:string, variable: number, length: number}, effectChance: number, coolDown: number, currentCoolDown: number}[] = [];
   vampires: { health: number, attack: number, defence: number, accuracy, agility: number, side: string, name: string }[] = [];
-  characters: { health: number, attack: number, defence: number, accuracy, agility: number, side: string, name: string }[] = [];
+  characters: { health: number, attack: number, defence: number, accuracy, agility: number, side: string, name: string, abilities: any[] }[] = [];
   room: any[] = [];
   characterDisplays: any[] = [];
   report: any[] = [];
   scrolled: boolean = false;
   hits = [];
 
-  constructor() {
+  constructor(private abilitiesService: AbilitiesService) {
     this.characters.push({
       name: 'Jonny',
       health: 100,
       defence: 0,
       attack: 10,
       accuracy: 60,
-      agility: 10,
-      side: 'human'
+      agility: 3,
+      side: 'human',
+      abilities: [abilitiesService.get('basicAttack'),abilitiesService.get('venomAttack')]
     });
     this.characters.push({
       name: 'Howey',
@@ -34,12 +37,33 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       attack: 10,
       accuracy: 90,
       agility: 5,
-      side: 'human'
+      side: 'human',
+      abilities: [abilitiesService.get('basicAttack')]
+    });
+    this.characters.push({
+      name: 'James',
+      health: 120,
+      defence: 6,
+      attack: 3,
+      accuracy: 95,
+      agility: 30,
+      side: 'human',
+      abilities: [abilitiesService.get('basicAttack')]
+    });
+    this.characters.push({
+      name: 'Thomas',
+      health: 45,
+      defence: 4,
+      attack: 30,
+      accuracy: 50,
+      agility: 4,
+      side: 'human',
+      abilities: [abilitiesService.get('basicAttack')]
     });
     this.createVampires(20);
     for (let character of this.characters)
       this.characterDisplays.push(Object.keys(character))
-    this.sortTurns();
+
   }
 
   ngOnInit() {
@@ -49,9 +73,14 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     window['$']("#reportbox").on('scroll', ()=> {
       this.scrolled = true;
     });
+    this.startGame();
   }
-
-
+  addAbility(character,abilityName){
+    if(abilityName==='')
+      character.abilities.push(this.ability[0]);
+    if(abilityName==='Venom Attack')
+      character.abilities.push(this.ability[1]);
+  }
   /*updateScroll() {
       const element = document.getElementById("reportbox");
       element.scrollTop = element.scrollHeight;
@@ -62,7 +91,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       this.vampires.push({
         name: "Basic Vampire",
         health: this.rndInt(200),
-        attack: this.rndInt(10),
+        attack: this.rndInt(50),
         defence: this.rndInt(3),
         accuracy: this.rndInt(100),
         agility: this.rndInt(15),
@@ -70,7 +99,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       })
   }
 
-  rndInt(x: number) {
+   rndInt(x: number) {
     return Math.round(Math.random() * x)
   }
 
@@ -86,12 +115,12 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       if (a.agility > b.agility)
         return -1;
       return 0;
-    })
+    });
   }
 
   damageCalculation(attacker: any, defender: any) {
     if ((attacker.accuracy - Math.round(((defender.agility + attacker.accuracy) / attacker.accuracy))) >= this.rndInt(101)) {
-      let defend = this.rndInt(defender.defence)
+      let defend = this.rndInt(defender.defence);
       if ((attacker.attack - defend) > 0)
         return ( attacker.attack - defend);
     }
@@ -105,7 +134,34 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       this.report.push(this.room[0].name + ' hit ' + Defender + ' for ' + damage);
   }
 
+  startGame() {
+    this.sortTurns();
+    if (this.room[0].side === 'human') {
+      document.getElementById( this.room[0].name + 'id').classList.add('startTurn');
+    }
+    if (this.room[0].side === 'vampire') {
+      let index = Math.floor(Math.random() * this.characters.length);
+      let damage = this.damageCalculation(this.room[0], this.characters[index]);
+      if (damage == 0)
+        this.updateReport(true);
+      else {
+        this.characters[index].health -= damage;
+        window['M'].toast({html: (this.characters[index].name + ' took ' + damage + ' damage'), classes: 'red'});
+        this.updateReport(false, this.characters[index].name, damage);
+      }
+      this.room.splice(0, 1);
+      this.turnSystem();
+    }
+  }
+
   attack(event, i: number) {
+    console.log(window['$'] ('input[name=abilities]'));
+    let radioButtons = window['$'] ('input[name=abilities]');
+    console.log(window['$'](":radio[name='abilities']").index(window['$'](":radio[name='abilities']:checked"));
+    if(this.room[0].side  === 'human') {
+      document.getElementById(this.room[0].name + 'id').classList.remove('startTurn');
+      document.getElementById(this.room[0].name + 'id').classList.add('endTurn');
+    }
     let damage = this.damageCalculation(this.room[0], this.vampires[i]);
     if (damage == 0) {
       this.spawnStatus(event,"Missed");
@@ -115,7 +171,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       this.vampires[i].health -= damage;
       this.updateReport(false, this.vampires[i].name,damage);
       this.spawnStatus(event,damage);
-      window['M'].toast({html: (this.room[0].name+' hit '+this.vampires[i].name+' for '+damage + ' damage'), classes: 'green'})
+      window['M'].toast({html: (this.room[0].name+' hit '+this.vampires[i].name+' for '+damage + ' damage'), classes: 'green'});
       if (this.vampires[i].health < 1) {
         this.vampires.splice(i, 1);
         window['M'].toast({html: (this.vampires[i].name+' died'), classes: 'black'})
@@ -131,7 +187,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       styles: {left: event.clientX +10+ 'px',top:event.clientY + 'px'},
       statusText
     };
-    this.hits.push(obj)
+    this.hits.push(obj);
     setTimeout(()=>this.hits.splice(this.hits.indexOf(obj), 1), 1200);
   };
 
@@ -141,6 +197,8 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       this.turnSystem();
     }
     if (this.room.length >= 1 && this.room[0].side === 'human') {
+      document.getElementById(this.room[0].name + 'id').classList.remove('endTurn');
+      document.getElementById( this.room[0].name + 'id').classList.add('startTurn');
     }
     if (this.room.length >= 1 && this.room[0].side === 'vampire') {
       let index = Math.floor(Math.random() * this.characters.length);
@@ -149,7 +207,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
         this.updateReport(true);
       else {
         this.characters[index].health -= damage;
-        window['M'].toast({html: (this.characters[index].name+' took '+damage + ' damage'), classes: 'red'})
+        window['M'].toast({html: (this.characters[index].name+' took '+damage + ' damage'), classes: 'red'});
         this.updateReport(false, this.characters[index].name, damage);
       }
       this.room.splice(0, 1);

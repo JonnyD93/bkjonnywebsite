@@ -17,6 +17,7 @@ import { SnakeComponent } from './snake/snake.component';
 import { BlogCreationComponent } from './admin/blog-creation-page/blog-creation-page.component';
 import { AboutMeComponent } from './about-me/about-me.component';
 import { VampireVillageComponent } from './vampire-village/vampire-village.component';
+import {AbilitiesService} from "./services/abilities.service";
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -57,7 +58,7 @@ firebase.initializeApp(config);
     HttpModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [Location, {provide: LocationStrategy, useClass: HashLocationStrategy}],
+  providers: [AbilitiesService, Location, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

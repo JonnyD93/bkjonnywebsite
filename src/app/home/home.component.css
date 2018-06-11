@@ -23,7 +23,7 @@
 .card {
   opacity: 0;
   border-radius: 16px;
-  animation: 1s ease-out 0s 1 slideInFromLeft forwards;
+  animation: 1s ease-out slideInFromLeft forwards;
 }
 iframe{
   alignment: center;

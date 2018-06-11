@@ -7,20 +7,22 @@
     </div>
   </div>
   <div class="row">
-    <div class="card currentTurn hoverable character-stat col s3" *ngFor="let item of characterDisplays; let i = index">
-      <div class="card-title" *ngFor="let itemX of item">
-        <span *ngIf="itemX =='name'">{{characters[i][itemX]}}</span>
-      </div>
-      <div class="stats" *ngFor="let itemX of item">
-        <div *ngIf="itemX != 'side'&& itemX != 'name'">{{itemX + ": "+ characters[i][itemX]}}</div>
+    <div class="card character-stat col s2" *ngFor="let item of characterDisplays; let i = index"
+         [id]="characters[i].name + 'id'">
+      <div *ngFor="let itemX of item">
+        <div class="card-title" *ngIf="itemX =='name'">{{characters[i][itemX]}}</div>
+        <div class="stats">
+          <div *ngIf="itemX != 'side'&& itemX != 'name' && itemX != 'abilities'">{{itemX + ": "+ characters[i][itemX]}}
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <!--<div class="report-box" id="reportbox">
-    <div class="message" *ngFor="let action of report">
-      {{action}}
-    </div>
-  </div>-->
 </div>
-<span class="status" *ngFor="let hit of hits" [ngStyle]="hit.styles">{{hit.statusText}}
-</span>
+<nav class="abilities-ui">
+  <label *ngFor="let item of characters[0].abilities">
+    <input class="with-gap" name="abilities" type="radio" checked/>
+    <div class="btn">{{item.name}}</div>
+  </label>
+</nav>
+<span class="status" *ngFor="let hit of hits" [ngStyle]="hit.styles">{{hit.statusText}}</span>
