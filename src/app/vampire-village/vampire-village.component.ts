@@ -21,7 +21,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   hits = [];
 
   constructor(private abilitiesService: AbilitiesService) {
-    //All character Data will be received from a Database 
+    //All character Data will be received from a Database
     this.characters.push({
       name: 'Jonny',
       health: 100,
@@ -87,6 +87,14 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
 
    rndInt(x: number) {
     return Math.round(Math.random() * x)
+  }
+  spawnToast(char:string, style:string, receiving:boolean, dead:boolean,damage?:number,char2?:string){
+    if(receiving)
+      return window['M'].toast({html: (char + ' took '+damage + ' damage'), classes: style});
+    if(dead)
+      return window['M'].toast({html: (char + ' died'), classes: style});
+    if(!receiving)
+      return window['M'].toast({html: (char + ' hit ' + char2 + ' for ' + damage + ' damage'), classes: style})
   }
 
   updateReport(Missed: boolean, Defender?: string, damage?: number) {
@@ -176,10 +184,10 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       this.vampires[i].health -= damage;
       this.updateReport(false, this.vampires[i].name,damage);
       this.spawnStatus(event,damage);
-      window['M'].toast({html: (this.room[0].name+' hit '+this.vampires[i].name+' for '+damage + ' damage'), classes: 'green'});
+      this.spawnToast(this.room[0].name,'green', false, false, damage, this.vampires[i].name);
       if (this.vampires[i].health < 1) {
         this.vampires.splice(i, 1);
-        window['M'].toast({html: (this.vampires[i].name+' died'), classes: 'black'})
+        this.spawnToast(this.vampires[i].name, 'black', false, true);
       }
     }
     this.room.splice(0, 1);
@@ -212,7 +220,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
         this.updateReport(true);
       else {
         this.characters[index].health -= damage;
-        window['M'].toast({html: (this.characters[index].name+' took '+damage + ' damage'), classes: 'red'});
+        this.spawnToast(this.room[0].name,'red',false,false,  damage,this.characters[index].name);
         this.updateReport(false, this.characters[index].name, damage);
       }
       this.room.splice(0, 1);

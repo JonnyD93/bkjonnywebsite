@@ -39,10 +39,16 @@ li.active{
 .body,height{
   height: 100%;
 }
+.btn{
+  background-color: white !important;
+  color: black;
+  text-transform: none;
+}
 .card-content{
   margin-top: 16px;
   padding-top: 0px;
 }
+
 .card-title{
   border-radius: 16px;
   padding-top: 0px;
