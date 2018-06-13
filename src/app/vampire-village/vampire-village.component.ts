@@ -27,10 +27,10 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
 
   constructor(private abilitiesService: AbilitiesService) {
     // All character Data will be received from a Database
-    this.characters.push(new Entity('Jonny','human', 100, 10, 0, 60, 5 , [abilitiesService.get('basicAttack'), abilitiesService.get('venomAttack')]));
-    this.characters.push(new Entity('Howey','human', 65, 15, 5, 80, 1, [abilitiesService.get('basicAttack')]));
-    this.characters.push(new Entity('James','human', 250, 50, 0, 10, 0,  [abilitiesService.get('basicAttack'), abilitiesService.get('venomAttack')]));
-    this.characters.push(new Entity('Thomas','human', 40, 5, 5, 100, 20,  [abilitiesService.get('basicAttack')]));
+    this.characters.push(new Entity('Jonny', 'human', 100, 0, 0, 60, 5, [abilitiesService.get('basicAttack'), abilitiesService.get('venomAttack')]));
+    this.characters.push(new Entity('Howey', 'human', 65, 0, 5, 80, 1, [abilitiesService.get('basicAttack')]));
+    this.characters.push(new Entity('James', 'human', 250, 0, 0, 10, 0, [abilitiesService.get('basicAttack'), abilitiesService.get('venomAttack')]));
+    this.characters.push(new Entity('Thomas', 'human', 40, 0, 5, 100, 20, [abilitiesService.get('basicAttack')]));
     // Proper Generation will be created later on
     this.createVampires(20);
 
@@ -76,9 +76,9 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   };
 
   // Creates and pushes a Toast that displays what happened during each turn
-  spawnToast(char: string, style: string, ability: string,receiving: boolean, dead: boolean, damage?: number, char2?: string) {
+  spawnToast(char: string, style: string, ability: string, receiving: boolean, dead: boolean, damage?: number, char2?: string) {
     if (receiving)
-      return window['M'].toast({html: (char +' '+ ability +' '+ damage + ' for damage'), classes: style});
+      return window['M'].toast({html: (char + ' ' + ability + ' ' + damage + ' for damage'), classes: style});
     if (dead)
       return window['M'].toast({html: (char + ' died'), classes: style});
     if (!receiving)
@@ -95,8 +95,8 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
 
   // Planned to be Removed
   createVampires(y) {
-    for (let x = 0; x < (this.rndInt(y) ) + 1; x++)
-      this.vampires.push(new Entity("Basic Vampire", 'vampire', this.rndInt(200), this.rndInt(20), this.rndInt(3), 100, this.rndInt(15), [this.abilitiesService.get('basicAttack')]));
+    for (let x = 0; x < (1) + 1; x++)
+      this.vampires.push(new Entity("Basic Vampire", 'vampire', 100, 1, 3, 100, 1, [this.abilitiesService.get('venomAttack')]));
   }
 
   // Sorts the Turns based on Agility
@@ -115,14 +115,16 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  damageCalculation(attacker: any, defender: any, abilitySelected: number): [Entity, Ability, number] {
+  damageCalculation(attacker: Entity, defender: Entity, abilitySelected: number): [Entity, Ability, number] {
     let ability = attacker.abilities[abilitySelected];
     let type = ability.type;
-    if ((attacker.accuracy - Math.round(((defender.agility + attacker.accuracy) / attacker.accuracy))) >= this.rndInt(101)) {
+    if ((attacker.accuracy >= this.rndInt(100 + defender.agility))) {
       let defend = this.rndInt(defender.defence);
-      let attack = attacker.attack * attacker.abilities[abilitySelected].damageMultiplier;
-      if (type === "health" && (attack - defend) > 0) {
-        defender.health -= attack;
+      let attack = Math.round(attacker.attack * attacker.abilities[abilitySelected].damageMultiplier);
+      defender = this.applyEffect(defender, ability);
+      if (type === "health") {
+        if ((attack - defend) >= 0)
+          defender.health -= attack;
         return [defender, attacker.abilities[abilitySelected], attack];
       }
       if (type === 'name') {
@@ -131,39 +133,44 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       }
       else {
         if (defender[type] - attacker.attack >= 0) {
-          defender[type] = attack;
+          defender[type] -= attack;
           return [defender, attacker.abilities[abilitySelected], attack];
         }
         else {
-          defender[type] -= 0;
-          return [defender,  attacker.abilities[abilitySelected], attack];
+          defender[type] = 0;
+          return [defender, attacker.abilities[abilitySelected], attack];
         }
       }
     }
     // Returns null if the attacker misses
     return null;
   }
+
+  // Apples the effect to the person defending
+  applyEffect(defender: Entity, ability: Ability): Entity {
+    if (ability.effect != null && (ability.effectChance >= this.rndInt(100)))
+      defender.activeEffects.push(ability.effect);
+    return defender;
+  }
+
   // Calculates the Effect damage for that turn
-  effectCalculation(attacker: any, defender: any, abilitySelected: number): [Entity, Ability, number]{
+  effectCalculation(attacker: any, defender: any, abilitySelected: number): [Entity, Ability, number] {
     let ability = attacker.abilities[abilitySelected];
     let effect = ability.effect;
     let type = ability.effect.type;
-    if ((ability.effectChance >= this.rndInt(101))) {
-      let defend = this.rndInt(defender.defence);
-      let attack = effect.effectVariable;
-      if (type === "health") {
-        defender.health -= attack;
+    let attack = effect.effectVariable;
+    if (type === "health") {
+      defender.health -= attack;
+      return [defender, effect, attack];
+    }
+    else {
+      if (defender[type] - attacker.attack >= 0) {
+        defender[type] -= attack;
         return [defender, effect, attack];
       }
       else {
-        if (defender[type] - attacker.attack >= 0) {
-          defender[type] = attack;
-          return [defender, effect, attack];
-        }
-        else {
-          defender[type] -= 0;
-          return [defender,  effect, attack];
-        }
+        defender[type] = 0;
+        return [defender, effect, attack];
       }
     }
     // Returns null if the attacker misses
@@ -194,7 +201,6 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   // The click action for the player
   attack(event, i: number) {
     let indexSelected = window['$'](":radio[name='abilities']").index(window['$'](":radio[name='abilities']:checked"));
-    console.log(indexSelected);
     document.getElementById(this.room[0].name + 'id').classList.remove('startTurn');
     document.getElementById(this.room[0].name + 'id').classList.add('endTurn');
     let attack = this.damageCalculation(this.room[0], this.vampires[i], indexSelected);
@@ -207,10 +213,10 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       this.vampires[i].health -= damage;
       this.updateReport(false, this.vampires[i].name, damage);
       this.spawnStatus(event, damage);
-      this.spawnToast(this.room[0].name, 'green', attack[1].description,false, false, damage, this.vampires[i].name);
+      this.spawnToast(this.room[0].name, 'green', attack[1].description, false, false, damage, this.vampires[i].name);
       if (this.vampires[i].health < 1) {
+        this.spawnToast(this.vampires[i].name, 'black', attack[1].description, false, true);
         this.vampires.splice(i, 1);
-        this.spawnToast(this.vampires[i].name,'black', attack[1].description, false, true);
       }
     }
     this.room.splice(0, 1);
@@ -235,8 +241,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       else {
         let damage = attack[2];
         this.characters[index] = attack[0];
-        this.characters[index].health -= damage;
-        this.spawnToast(this.room[0].name,'red', attack[1].description, false, false, damage, this.characters[index].name);
+        this.spawnToast(this.room[0].name, 'red', attack[1].description, false, false, damage, this.characters[index].name);
         this.updateReport(false, this.characters[index].name, damage);
       }
       this.room.splice(0, 1);
