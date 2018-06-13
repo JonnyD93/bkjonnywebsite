@@ -4,14 +4,16 @@ export class Ability {
 
   name: string;
   damageMultiplier: number;
+  type: string;
   description: string;
   effect: any;
   effectChance: number;
   cooldown: number;
   currentCooldown: number;
 
-  constructor(name,description,damageMultiplier, effect, effectChance, cooldown){
+  constructor(name,type,description,damageMultiplier, effect, effectChance, cooldown){
     this.name = name;
+    this.type = type;
     this.damageMultiplier = damageMultiplier;
     this.effect = effect;
     this.effectChance = effectChance;

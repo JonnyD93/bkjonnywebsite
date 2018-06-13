@@ -10,14 +10,17 @@ export class AbilitiesService {
   constructor() {
     this.effects = new Effects();
     let abilities: any = {};
-    abilities.basicAttack =  new Ability('Basic Attack','punch',1,null,null,0);
-    abilities.venomAttack =  new Ability('Spit Venom','spew venom',1.4, this.effects.getWeakVenomAttack(),0.2,2);
+    abilities.basicAttack =  new Ability('Basic Attack','health','punched',1,null,null,0);
+    abilities.venomAttack =  new Ability('Spit Venom','health','spatted venom',1.4, this.effects.getWeakVenomAttack(),20,2);
 
     this.abilities = abilities;
   }
 
   get(name){
     return Object.assign({},this.abilities[name]);
+  }
+  getAll(){
+    return this.abilities;
   }
 
 }
