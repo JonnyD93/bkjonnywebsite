@@ -27,6 +27,12 @@ label > input:checked + div{
   bottom: 0%;
   background-color: white;
 }
+.effect{
+  position: absolute;
+  border-radius: 100%;
+  left: 80%;
+  top: 0%;
+}
 .player-ui{
   padding-left: 16px;
   font-size: 32px;
@@ -43,8 +49,7 @@ label > input:checked + div{
   animation: playerDeath 3s forwards;
 }
 .vampire{
-  max-width: 64px;
-  border-radius: 16px;
+
   background-color: gray;
 }
 .table{

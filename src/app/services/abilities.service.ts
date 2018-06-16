@@ -11,7 +11,7 @@ export class AbilitiesService {
     this.effects = new Effects();
     let abilities: any = {};
     abilities.basicAttack =  new Ability('Basic Attack','health','punched',1,null,null,0);
-    abilities.venomAttack =  new Ability('Spit Venom','health','spatted venom',1.4, this.effects.getWeakVenomAttack(),20,2);
+    abilities.venomAttack =  new Ability('Spit Venom','health','spewed venom on',1.4, this.effects.getWeakVenomAttack(),20,2);
 
     this.abilities = abilities;
   }

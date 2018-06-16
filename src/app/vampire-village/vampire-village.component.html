@@ -1,25 +1,33 @@
 <div class="container">
   <div class="row">
     <div style="padding-top: 32px;">
-      <div class="col s2" *ngFor="let vampire of vampires; let i = index">
-        <div class="btn vampire" *ngIf="vampire.health > 0" (click)="attack($event,i)">{{vampire.health}}</div>
+      <div class="col s2" *ngFor="let entity of enemyDisplays; let i = index">
+        <div class="btn vampire" *ngIf="entity.health > 0" (click)="attack($event,i)">{{entity.name}}</div>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="card character-stat col s2" *ngFor="let item of characterDisplays; let i = index"
-         [id]="characters[i].name + 'id'">
+    <div class="card character-stat col s2" *ngFor="let item of characterDisplays[0]; let i = index" [id]="characterDisplays[1][i].name + 'id'">
       <div *ngFor="let itemX of item">
-        <div class="card-title" *ngIf="itemX =='name'">{{characters[i][itemX]}}</div>
+        <div class="card-title" *ngIf="itemX =='name'">{{characterDisplays[1][i][itemX]}}</div>
         <div class="stats">
-          <div *ngIf="itemX != 'side'&& itemX != 'name' && itemX != 'abilities'">{{itemX + ": "+ characters[i][itemX]}}
+          <div *ngIf="itemX != 'side'&& itemX != 'name' && itemX != 'abilities' && itemX !='activeEffects'">{{itemX.charAt(0).toUpperCase() + itemX.slice(1) + ": "+ characterDisplays[1][i][itemX]}}
           </div>
+        </div>
+        <div *ngIf="itemX == 'activeEffects'">
+          <div *ngFor="let effect of characterDisplays[1][i].activeEffects">
+          {{effect.name + " " + effect.duration}}
+          </div>
+          <!--<a class='dropdown-trigger' href='#' data-target='i+"effects"'><i class="material-icons">menu</i> </a>
+          <ul [id]='i+"effects"' class='dropdown-content' *ngFor="let effect of characters[i].activeEffects">
+            <li><a href="#!">{{effect.name + " " + effect.duration}}</a></li>
+          </ul>!-->
         </div>
       </div>
     </div>
   </div>
 </div>
-<div *ngFor="let character of characters; let i = index">
+<div *ngFor="let character of characterDisplays[1]; let i = index">
   <nav class="abilities-ui" *ngIf="checkPlayerActive(character)">
     <span class="player-ui">{{character.name}}</span>
     <label *ngFor="let ability of character.abilities">
@@ -27,7 +35,7 @@
       <div class="btn">{{ability.name}}</div>
     </label>
     <div class="progress">
-      <div class="determinate" [style.width]="(healthCalculation(character.health,charactersHealth[i]))+'%'"></div>
+      <div class="determinate" [style.width]="(healthCalculation(character.health,characterDisplays[2][i]))+'%'"></div>
     </div>
   </nav>
 </div>
