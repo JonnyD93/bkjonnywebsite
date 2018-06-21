@@ -1,8 +1,8 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {AbilitiesService} from "../services/abilities.service";
-import {Entity} from "../services/models/entity.model";
-import {Ability} from "../services/models/ability.model";
-import {Effect} from "../services/models/effect.model";
+import {AbilitiesService} from "./services/abilities.service";
+import {Entity} from "./services/models/entity.model";
+import {Ability} from "./services/models/ability.model";
+import {Effect} from "./services/models/effect.model";
 
 @Component({
   selector: 'app-vampire-village',
@@ -189,18 +189,18 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       document.getElementById(this.turns[0].name + 'id').classList.add('startTurn');
     }
     if (this.turns[0].side === 'vampire') {
-      this.vampireAttack();
+      this.entityAttack(this.turns[0]);
       this.turns.splice(0, 1);
       this.turnSystem();
     }
   }
 
-  // Vampire Ai
-  vampireAttack() {
-    let enemies = this.room.filter(x => x.side != "vampire");
+  // Entity Ai
+  entityAttack(entity) {
+    let enemies = this.room.filter(x => x.side != entity.side);
     let index = Math.floor(Math.random() * enemies.length);
     let defender = this.room[this.room.indexOf(enemies[index])];
-    let attack = this.damageCalculation(this.turns[0], defender, 0);
+    let attack = this.damageCalculation(this.turns[0], defender, this.rndInt(entity.abilities.length-1));
     if (attack === null)
       this.updateReport(true);
     else {
@@ -209,7 +209,6 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       this.updateReport(false, defender.name, damage);
     }
   }
-
   // The click action for the player
   attack(event, index: number) {
     if (this.turns.length >= 1 && this.turns[0].side === 'human') {
@@ -239,42 +238,13 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   }
 
   // The turn system of the game
-  /*turnSystem() {
-    let index = this.room.indexOf(this.turns[0]);
-    if (this.turns.length >= 1 && this.turns[0].side === 'human') {
-      document.getElementById(this.turns[0].name + 'id').classList.remove('endTurn');
-      document.getElementById(this.turns[0].name + 'id').classList.add('startTurn');
-      if (this.room[index].activeEffects.length > 0)
-        this.effectTurn(this.room[index]);
-    }
-    if (this.turns.length >= 1 && this.turns[0].side === 'vampire') {
-      if (this.room[index].activeEffects.length > 0)
-        this.effectTurn(this.room[index]);
-      if (this.room[index].health < 1) {
-        this.spawnToast(this.room[index].name, 'black', 'effect', true);
-        this.room.splice(index, 1);
-      }
-      this.vampireAttack();
-      this.turns.splice(0, 1);
-      this.turnSystem();
-    }
-    if (this.turns.length === 0) {
-      this.sortTurns();
-      this.turnSystem();
-    }
-  }*/
-
   turnSystem() {
     if (this.turns.length == 0) {
       this.sortTurns();
       this.turnSystem();
-    } else {
-      let entity = this.room[this.room.indexOf(this.turns[0])];
-      if(entity==undefined){
-        console.log('called',entity)
-        this.sortTurns();
-        this.turnSystem();
-      }
+    }
+    let entity = this.room[this.room.indexOf(this.turns[0])];
+    if (entity != undefined) {
       if (entity.side === 'human') {
         document.getElementById(this.turns[0].name + 'id').classList.remove('endTurn');
         document.getElementById(this.turns[0].name + 'id').classList.add('startTurn');
@@ -282,15 +252,18 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
           this.effectTurn(entity);
       } else {
         if(entity.activeEffects.length > 0)
-          this.effectTurn(entity)
+          this.effectTurn(entity);
         if(entity.health < 1) {
           this.spawnToast(entity.name, 'black', 'effect', true);
           this.room.splice(this.room.indexOf(this.turns[0]), 1);
         }
-        this.vampireAttack();
+        this.entityAttack(entity);
         this.turns.splice(0, 1);
         this.turnSystem();
       }
+    } else {
+      this.sortTurns();
+      this.turnSystem();
     }
   }
 }

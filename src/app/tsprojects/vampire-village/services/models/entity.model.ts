@@ -1,5 +1,6 @@
 import {Ability} from "./ability.model";
 import {Effect} from "./effect.model";
+import {Item} from "./item.model";
 
 export class Entity {
   name: string;
@@ -11,6 +12,7 @@ export class Entity {
   agility: number;
   abilities: Ability[];
   activeEffects: Effect[];
+  inventory: Item[];
 
   constructor(name,side,health,attack, defence, accuracy, agility, abilities){
     this.name = name;

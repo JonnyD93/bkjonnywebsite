@@ -11,13 +11,20 @@ import { LayoutComponent } from './layout/layout.component';
 
 // Pages of Website
 import { HomeComponent } from './home/home.component';
-import { GiveawayWheelComponent } from './giveaway-wheel/giveaway-wheel.component';
+import { GiveawayWheelComponent } from './tsprojects/giveaway-wheel/giveaway-wheel.component';
 import { TicTacToeComponent } from './tic-tac-toe/tic-tac-toe.component';
-import { SnakeComponent } from './snake/snake.component';
 import { BlogCreationComponent } from './admin/blog-creation-page/blog-creation-page.component';
 import { AboutMeComponent } from './about-me/about-me.component';
-import { VampireVillageComponent } from './vampire-village/vampire-village.component';
-import {AbilitiesService} from "./services/abilities.service";
+
+// Vampire Village
+import { VampireVillageComponent } from './tsprojects/vampire-village/vampire-village.component';
+import { AbilitiesService } from "./tsprojects/vampire-village/services/abilities.service";
+import { FakeDataService } from "./tsprojects/vampire-village/services/fakeData.service";
+import { VampireVillageHomeComponent } from './tsprojects/vampire-village/vampire-village-home/vampire-village-home.component';
+import { VampireVillageLoginComponent } from './tsprojects/vampire-village/vampire-village-login/vampire-village-login.component';
+import { VampireVillageSignUpComponent } from './tsprojects/vampire-village/vampire-village-sign-up/vampire-village-sign-up.component';
+import { VampireVillageInventoryComponent } from './tsprojects/vampire-village/vampire-village-inventory/vampire-village-inventory.component';
+import {SnakeComponent} from "./tsprojects/snake/snake.component";
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -27,6 +34,10 @@ const appRoutes: Routes = [
   { path: 'snake', component: SnakeComponent },
   { path: 'tic-tac-toe', component: TicTacToeComponent },
   { path: 'vampire-village', component: VampireVillageComponent },
+  { path: 'vampire-village/home', component: VampireVillageHomeComponent },
+  { path: 'vampire-village/signup', component: VampireVillageSignUpComponent },
+  { path: 'vampire-village/login', component: VampireVillageLoginComponent },
+  { path: 'vampire-village/inventory', component: VampireVillageInventoryComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full'},
   { path: '**', component: HomeComponent }
 ];
@@ -50,7 +61,11 @@ firebase.initializeApp(config);
     HomeComponent,
     SnakeComponent,
     TicTacToeComponent,
-    VampireVillageComponent
+    VampireVillageComponent,
+    VampireVillageHomeComponent,
+    VampireVillageLoginComponent,
+    VampireVillageSignUpComponent,
+    VampireVillageInventoryComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +73,7 @@ firebase.initializeApp(config);
     HttpModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [AbilitiesService, Location, {provide: LocationStrategy, useClass: HashLocationStrategy}],
+  providers: [AbilitiesService, FakeDataService, Location, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
