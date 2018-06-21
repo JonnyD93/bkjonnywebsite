@@ -11,7 +11,7 @@
       <div *ngFor="let itemX of item">
         <div class="card-title" *ngIf="itemX =='name'">{{characterDisplays[1][i][itemX]}}</div>
         <div class="stats">
-          <div *ngIf="itemX != 'side'&& itemX != 'name' && itemX != 'abilities' && itemX !='activeEffects'">{{itemX.charAt(0).toUpperCase() + itemX.slice(1) + ": "+ characterDisplays[1][i][itemX]}}
+          <div *ngIf="itemX != 'side'&& itemX != 'name' && itemX != 'abilities' && itemX !='activeEffects' && itemX !='inventory'">{{itemX.charAt(0).toUpperCase() + itemX.slice(1) + ": "+ characterDisplays[1][i][itemX]}}
           </div>
         </div>
         <div *ngIf="itemX == 'activeEffects'">

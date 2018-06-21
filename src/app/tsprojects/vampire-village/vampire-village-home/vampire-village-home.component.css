@@ -1,0 +1,7 @@
+.progress {
+  width: 75%;
+  border-radius: 16px;
+  height: 16px;
+  text-align: center;
+  font-size: 12px;
+}
