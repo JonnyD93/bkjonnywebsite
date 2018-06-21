@@ -10,6 +10,9 @@ export class AboutMeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    window['$'](document).ready(()=>{
+      window['$']('.parallax').parallax();
+    });
   }
 
 }

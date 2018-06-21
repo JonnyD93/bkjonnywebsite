@@ -25,10 +25,13 @@ import { VampireVillageLoginComponent } from './tsprojects/vampire-village/vampi
 import { VampireVillageSignUpComponent } from './tsprojects/vampire-village/vampire-village-sign-up/vampire-village-sign-up.component';
 import { VampireVillageInventoryComponent } from './tsprojects/vampire-village/vampire-village-inventory/vampire-village-inventory.component';
 import {SnakeComponent} from "./tsprojects/snake/snake.component";
+import {ItemsService} from "./tsprojects/vampire-village/services/items.service";
+import { ClassportfolioComponent } from './classportfolio/classportfolio.component';
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'about', component: AboutMeComponent },
+  { path: 'classportfolio', component: ClassportfolioComponent },
   { path: 'blog-creation-page', component: BlogCreationComponent },
   { path: 'giveaway-wheel', component: GiveawayWheelComponent },
   { path: 'snake', component: SnakeComponent },
@@ -65,7 +68,8 @@ firebase.initializeApp(config);
     VampireVillageHomeComponent,
     VampireVillageLoginComponent,
     VampireVillageSignUpComponent,
-    VampireVillageInventoryComponent
+    VampireVillageInventoryComponent,
+    ClassportfolioComponent
   ],
   imports: [
     BrowserModule,
@@ -73,7 +77,7 @@ firebase.initializeApp(config);
     HttpModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [AbilitiesService, FakeDataService, Location, {provide: LocationStrategy, useClass: HashLocationStrategy}],
+  providers: [AbilitiesService, FakeDataService, ItemsService, Location, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

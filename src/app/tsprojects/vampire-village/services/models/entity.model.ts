@@ -1,6 +1,7 @@
 import {Ability} from "./ability.model";
 import {Effect} from "./effect.model";
 import {Item} from "./item.model";
+import {ItemsService} from "../items.service";
 
 export class Entity {
   name: string;
@@ -24,6 +25,6 @@ export class Entity {
     this.agility = agility;
     this.abilities = abilities;
     this.activeEffects = [];
+    this.inventory = [];
   }
-
 }

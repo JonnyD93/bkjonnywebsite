@@ -3,6 +3,8 @@ import {AbilitiesService} from "./services/abilities.service";
 import {Entity} from "./services/models/entity.model";
 import {Ability} from "./services/models/ability.model";
 import {Effect} from "./services/models/effect.model";
+import {ItemsService} from "./services/items.service";
+import {FakeDataService} from "./services/fakeData.service";
 
 @Component({
   selector: 'app-vampire-village',
@@ -24,20 +26,17 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   // The hits that pop up when a creature is attacked.
   hits: any = [];
 
-  constructor(private abilitiesService: AbilitiesService) {
-    // All character Data will be received from a Database
-    this.room.push(new Entity('Jonny', 'human', 100, 13, 0, 60, 5, [abilitiesService.get('basicAttack'), abilitiesService.get('venomAttack')]));
-    this.room.push(new Entity('Howey', 'human', 65, 15, 5, 80, 0, [abilitiesService.get('basicAttack')]));
-    this.room.push(new Entity('James', 'human', 250, 10, 0, 10, 1, [abilitiesService.get('basicAttack'), abilitiesService.get('venomAttack')]));
-    this.room.push(new Entity('Thomas', 'human', 40, 30, 5, 100, 20, [abilitiesService.get('basicAttack')]));
-    // Proper Generation will be created later on
-    this.createVampires(20);
+  constructor(private fakeData: FakeDataService) {
+    // Pulling from the fake data Service
+    for(let character of fakeData.PlayerData.characters)
+      this.room.push(character);
     // Setting up stuff for Displaying purposes
     for (let character of this.room.filter(x => x.side === "human")) {
       this.characterDisplays[0].push(Object.keys(character));
       this.characterDisplays[1].push(character);
       this.characterDisplays[2].push(character.health);
     }
+
     for (let entity of this.room.filter(x => x.side != "human"))
       this.enemyDisplays.push(entity);
     // Initial setup of the game
@@ -50,6 +49,8 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.startGame();
   }
+
+
 
   // Function that returns a random int up to x
   rndInt(x: number) {
@@ -100,12 +101,6 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       this.report.push(this.turns[0].name + ' Missed.');
     else
       this.report.push(this.turns[0].name + ' hit ' + Defender + ' for ' + damage);
-  }
-
-  // Planned to be Removed
-  createVampires(y) {
-    for (let x = 0; x < (1) + 1; x++)
-      this.room.push(new Entity("Vampire", 'vampire', 100, 0, 3, 100, 1, [this.abilitiesService.get('venomAttack')]));
   }
 
   // Sorts the Turns based on Agility

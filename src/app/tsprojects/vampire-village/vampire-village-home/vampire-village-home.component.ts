@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as firebase from "firebase";
 import {FakeDataService} from "../services/fakeData.service";
+import {Entity} from "../services/models/entity.model";
 
 @Component({
   selector: 'app-vampire-village-home',
@@ -10,7 +11,7 @@ import {FakeDataService} from "../services/fakeData.service";
 export class VampireVillageHomeComponent implements OnInit {
 
   database: any;
-  userData: { level: number, experience: number, inventory: any[], characters: any[]};
+  userData: { level: number, experience: number, inventory: any[], characters: Entity[]};
 
   constructor(private fakeDataService: FakeDataService) {
     this.database = firebase.database();
