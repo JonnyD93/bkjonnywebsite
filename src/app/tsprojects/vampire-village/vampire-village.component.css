@@ -17,6 +17,13 @@ label > input:checked + div{
   margin-bottom: 16px;
   text-transform: uppercase;
 }
+.ability-disabled-ui{
+  padding-left: 16px;
+  cursor: none;
+  background-color: gray;
+  text-transform: unset;
+  margin-bottom: 16px;
+}
 .character-stat{
   margin-top:30%;
   margin-right: 16px;
@@ -41,7 +48,7 @@ label > input:checked + div{
   top: 0%;
 }
 .player-ui{
-  padding-left: 16px;
+  padding-left: 64px;
   font-size: 32px;
   color: black;
 }
@@ -49,18 +56,41 @@ label > input:checked + div{
   margin-top: -26px;
   font-size: 8px;
 }
+.effect{
+  position: absolute;
+  top: -5px;
+
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  box-shadow: black 1px 2px 8px;
+}
 .startTurn{
   animation: turnStart 1s forwards;
 }
 .endTurn{
   animation: turnEnd 1s;
 }
+.skip-turn-btn{
+  position: absolute;
+  top: 0;
+  height: 32px;
+  background-color: gray;
+}
+.skip-turn-btn:hover {
+  position: absolute;
+  top: 0;
+  height: 32px;
+  background-color: green;
+}
+.skip-turn-icon {
+  line-height: inherit;
+  }
 .playerDead{
   animation-delay: 1s;
   animation: playerDeath 3s forwards;
 }
 .vampire{
-
   background-color: gray;
 }
 .table{

@@ -6,36 +6,41 @@
       </div>
     </div>
   </div>
-  <div class="row">
+  <div class="row" style="z-index: 10">
     <div *ngFor="let item of characterDisplays[0]; let i = index" [id]="characterDisplays[1][i].name + 'id'">
-      <div class="card character-stat col s2" *ngIf="characterDisplays[1][i].health>0" >
-      <div *ngFor="let itemX of item">
-        <div class="card-title" *ngIf="itemX =='name'">{{characterDisplays[1][i][itemX]}}<i class="material-icons downArrow" (click)="attack($event,this.characterDisplays[1][i])">my_location</i> </div>
-        <div class="stats">
-          <div *ngIf="itemX != 'side'&& itemX != 'name' && itemX != 'abilities' && itemX !='activeEffects' && itemX !='inventory'">{{itemX.charAt(0).toUpperCase() + itemX.slice(1) + ": "+ characterDisplays[1][i][itemX]}}
+      <div class="card character-stat col s2" *ngIf="characterDisplays[1][i].health>0">
+        <div *ngFor="let itemX of item">
+          <div class="card-title" *ngIf="itemX =='name'">{{characterDisplays[1][i][itemX]}}<i
+            class="material-icons downArrow" (click)="attack($event,this.characterDisplays[1][i])">my_location</i></div>
+          <div class="stats">
+            <div
+              *ngIf="itemX != 'side'&& itemX != 'name' && itemX != 'abilities' && itemX !='activeEffects' && itemX !='inventory'">
+              {{itemX.charAt(0).toUpperCase() + itemX.slice(1) + ": "+ characterDisplays[1][i][itemX]}}
+            </div>
           </div>
-        </div>
-        <div *ngIf="itemX == 'activeEffects'">
-          <div *ngFor="let effect of characterDisplays[1][i].activeEffects">
-          {{effect.name + " " + effect.duration}}
+          <div *ngIf="itemX == 'activeEffects'">
+            <div class="effect" *ngFor="let effect of characterDisplays[1][i].activeEffects; let j = index"
+                 [style.background-color]="effect.color" [style.z-index]="-1-j" [style.left]="(j*10)-5+'px'"></div>
           </div>
-          <!--<a class='dropdown-trigger' href='#' data-target='i+"effects"'><i class="material-icons">menu</i> </a>
-          <ul [id]='i+"effects"' class='dropdown-content' *ngFor="let effect of characters[i].activeEffects">
-            <li><a href="#!">{{effect.name + " " + effect.duration}}</a></li>
-          </ul>!-->
         </div>
       </div>
     </div>
   </div>
-  </div>
 </div>
 <div *ngFor="let character of characterDisplays[1]; let i = index">
   <nav class="abilities-ui" *ngIf="checkPlayerActive(character)">
+    <span><div class="btn skip-turn-btn" (click)="skipTurn(false)"><i class="material-icons skip-turn-icon">access_time</i></div></span>
+    <span><div class="btn skip-turn-btn" style="top: 32px;"><i class="material-icons skip-turn-icon">backspace</i></div></span>
     <span class="player-ui">{{character.name}}</span>
-    <label *ngFor="let ability of character.abilities">
-      <input class="with-gap" name="abilities" type="radio" checked/>
-      <div class="btn">{{ability.name}}<div class='itemName'*ngIf="checkItemAbility(character,ability)!=''">{{checkItemAbility(character,ability)}}</div></div>
-    </label>
+    <span *ngFor="let ability of character.abilities; let j = index">
+      <label >
+      <input class="with-gap" name="abilities" type="radio" [checked]="checkLastActiveAbility(ability)"/>
+      <div  class="btn" *ngIf="ability.currentCooldown <= 0">{{ability.name}}
+        <div class='itemName' *ngIf="checkItemAbility(character,ability)!=''">{{checkItemAbility(character,ability)}}</div>
+      </div>
+      </label>
+      <div *ngIf="ability.currentCooldown>0" class="btn ability-disabled-ui disabled">{{ability.name}}<div class='itemName' *ngIf="checkItemAbility(character,ability)!=''">{{checkItemAbility(character,ability)}}</div></div>
+    </span>
     <div class="progress">
       <div class="determinate" [style.width]="(healthCalculation(character.health,characterDisplays[2][i]))+'%'"></div>
     </div>

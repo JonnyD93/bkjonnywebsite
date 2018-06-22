@@ -11,7 +11,7 @@ export class ItemsService {
   constructor(private abilitiesService: AbilitiesService) {
     let items: any = {};
     items.helm =  new Item("Helm","Cap for ya head", "defense",0,3,null);
-    items.dagger =  new Item("dagger","dagga for ya hand", "attack",0,2,[abilitiesService.get('basicAttack')]);
+    items.dagger =  new Item("dagger","dagga for ya hand", "attack",0,2,[abilitiesService.get('stabAttack')]);
     this.items = items;
   }
 
