@@ -22,6 +22,13 @@ label > input:checked + div{
   margin-right: 16px;
   background-color: white;
 }
+.downArrow{
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  color: lightgray;
+  cursor: pointer;
+}
 .abilities-ui{
   position: fixed;
   bottom: 0%;
@@ -37,6 +44,10 @@ label > input:checked + div{
   padding-left: 16px;
   font-size: 32px;
   color: black;
+}
+.itemName{
+  margin-top: -26px;
+  font-size: 8px;
 }
 .startTurn{
   animation: turnStart 1s forwards;
@@ -111,7 +122,7 @@ label > input:checked + div{
 }
 @keyframes turnStart{
   0%{
-    box-shadow: 0px 0px 0px gold;
+    box-shadow: 0px 0px 0px black;
     transform: translateY(0);
   }
   100%{
@@ -121,7 +132,7 @@ label > input:checked + div{
 }
 @keyframes turnEnd{
   0%{
-    box-shadow: 0px 0px 20px gold;
+    box-shadow: 0px 0px 20px black;
     transform: translateY(-32px);
   }
   100%{

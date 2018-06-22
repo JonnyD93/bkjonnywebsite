@@ -18,6 +18,7 @@ export class FakeDataService {
     characters.push(new Entity('Thomas', 'human', 40, 30, 5, 100, 20, [abilitiesService.get('basicAttack')]));
     characters.push(new Entity("Vampire", 'vampire', 100, 0, 3, 100, 1, [this.abilitiesService.get('venomAttack')]));
     characters[0].inventory.push(itemsService.get('dagger'));
+    characters[0].inventory.push(itemsService.get('helm'));
     this.PlayerData = {level: 0, experience: 0, inventory: [], characters: characters};
     this.updateCharacters();
   }

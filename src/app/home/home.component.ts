@@ -63,7 +63,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
     for (let i = 0; i < this.Posts.length / this.amtPostsShown; i++)
       this.NumOfPages.push(i);
   }
-
+  checkActivePage(index){
+    if(this.pageIndex===index){
+      return '#7bc9ff';
+    }
+    return 'white';
+  }
   changePage(Right: boolean) {
     if (Right)
       this.pageIndex++;
@@ -75,7 +80,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
     this.updatePage();
   }
-
+  changeLastPage(Right: boolean) {
+    if (Right)
+      this.pageIndex = this.NumOfPages[this.NumOfPages.length-1];
+    else {
+      this.pageIndex = 0;
+    }
+    this.updatePage();
+  }
   formatDate(string) {
     let date: Date = new Date(string);
     return (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
