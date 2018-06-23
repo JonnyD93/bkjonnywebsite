@@ -1,30 +1,30 @@
 <div class="container">
   <div class="row">
     <div style="padding-top: 32px;">
-      <div class="col s2" style="z-index: 10" *ngFor="let entity of enemyDisplays[0]; let i = index">
-        <div class="btn vampire" *ngIf="entity.health > 0 || entity.death" [ngClass]="{death: entity.death}"
-             [style.background-color]="calcColor(entity,enemyDisplays[1][i])" (click)="attack($event,entity)">
+      <div class="col s2" style="z-index: 10" *ngFor="let entity of enemyDisplays.entities; let i = index">
+        <div class="btn vampire" [ngClass]="{death: entity.death}"
+             [style.background-color]="calcColor(entity,enemyDisplays.healths[i])" (click)="attack($event,entity)">
           {{entity.name}}
         </div>
-        <div *ngIf="!entity.death"><div class="entity-effect" *ngFor="let effect of enemyDisplays[0][i].activeEffects; let j = index"
+        <div *ngIf="!entity.death"><div class="entity-effect" *ngFor="let effect of enemyDisplays.entities[i].activeEffects; let j = index"
                         [style.background-color]="effect.color" [style.z-index]="-1-j" [style.bottom]="36-j+'px'"></div></div>
       </div>
     </div>
   </div>
   <div class="row" style="z-index: 10">
-    <div *ngFor="let item of characterDisplays[0]; let i = index" [id]="characterDisplays[1][i].name + 'id'">
-      <div class="card character-stat col s2" *ngIf="characterDisplays[1][i].health>0">
-        <div *ngFor="let itemX of item">
-          <div class="card-title" *ngIf="itemX =='name'">{{characterDisplays[1][i][itemX]}}<i
-            class="material-icons downArrow" (click)="attack($event,this.characterDisplays[1][i])">my_location</i></div>
+    <div *ngFor="let keys of characterDisplays.keys; let i = index" [id]="characterDisplays.characters[i].name + 'id'">
+      <div class="card character-stat col s2">
+        <div *ngFor="let item of keys">
+          <div class="card-title" *ngIf="item =='name'">{{characterDisplays.characters[i][item]}}<i
+            class="material-icons downArrow" (click)="attack($event,this.characterDisplays.characters[i])">my_location</i></div>
           <div class="stats">
             <div
-              *ngIf="itemX != 'side'&& itemX != 'name' && itemX != 'abilities' && itemX !='activeEffects' && itemX !='inventory'">
-              {{itemX.charAt(0).toUpperCase() + itemX.slice(1) + ": "+ characterDisplays[1][i][itemX]}}
+              *ngIf="item != 'side'&& item != 'name' && item != 'abilities' && item !='activeEffects' && item !='inventory'">
+              {{item.charAt(0).toUpperCase() + item.slice(1) + ": "+ characterDisplays.characters[i][item]}}
             </div>
           </div>
-          <div *ngIf="itemX == 'activeEffects'">
-            <div class="effect" *ngFor="let effect of characterDisplays[1][i].activeEffects; let j = index"
+          <div *ngIf="item == 'activeEffects'">
+            <div class="effect" *ngFor="let effect of characterDisplays.characters[i].activeEffects; let j = index"
                  [style.background-color]="effect.color" [style.z-index]="-1-j" [style.left]="(j*10)-5+'px'"></div>
           </div>
         </div>
@@ -32,7 +32,7 @@
     </div>
   </div>
 </div>
-<div *ngFor="let character of characterDisplays[1]; let i = index">
+<div *ngFor="let character of characterDisplays.characters; let i = index">
   <nav class="abilities-ui" *ngIf="checkPlayerActive(character)">
     <span><div class="btn skip-turn-btn" (click)="skipTurn(false)"><i
       class="material-icons skip-turn-icon">access_time</i></div></span>
@@ -51,15 +51,15 @@
         *ngIf="checkItemAbility(character,ability)!=''">{{checkItemAbility(character,ability)}}</div></div>
     </span>
     <div class="progress">
-      <div class="determinate" [style.width]="(healthCalculation(character.health,characterDisplays[2][i]))+'%'"></div>
+      <div class="determinate" [style.width]="(healthCalculation(character.health,characterDisplays.healths[i]))+'%'"></div>
     </div>
   </nav>
 </div>
-<div *ngFor="let character of enemyDisplays[0]; let i = index">
+<div *ngFor="let character of enemyDisplays.entities; let i = index">
   <nav class="entity-ui"  *ngIf="checkPlayerActive(character)">
     <span class="entity-name">{{character.name}}</span>
     <div class="progress">
-      <div class="determinate" [style.width]="(healthCalculation(character.health,enemyDisplays[1][i]))+'%'"></div>
+      <div class="determinate" [style.width]="(healthCalculation(character.health,enemyDisplays.healths[i]))+'%'"></div>
     </div>
   </nav>
 </div>

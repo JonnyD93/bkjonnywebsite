@@ -18,8 +18,8 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   // Array for all entitys in the game
   room: Entity[] = [];
   // Each characters different type of Object Keys, as a separate variable
-  characterDisplays: any[][] = [[], [], []];
-  enemyDisplays: any[][] = [[], []];
+  characterDisplays: any = {keys: [], characters: [], healths: []};
+  enemyDisplays: any = {entities: [], healths: []};
   // The turns variable is populated with the turns of the game
   turns: Entity[] = [];
   // The report of the match --- Not important yet
@@ -33,13 +33,13 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       this.room.push(character);
     // Setting up stuff for Displaying purposes
     for (let character of this.room.filter(x => x.side === "human")) {
-      this.characterDisplays[0].push(Object.keys(character));
-      this.characterDisplays[1].push(character);
-      this.characterDisplays[2].push(character.health);
+      this.characterDisplays.keys.push(Object.keys(character));
+      this.characterDisplays.characters.push(character);
+      this.characterDisplays.healths.push(character.health);
     }
     for (let entity of this.room.filter(x => x.side != "human")) {
-      this.enemyDisplays[0].push(entity);
-      this.enemyDisplays[1].push(entity.health);
+      this.enemyDisplays.entities.push(entity);
+      this.enemyDisplays.healths.push(entity.health);
     }
     // Initial setup of the game
     this.sortTurns();
@@ -52,7 +52,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     this.startGame();
   }
 
-  // Cite https://basarat.gitbooks.io/typescript/docs/async-await.html
+  // Adds a Delay to the JS Cite https://basarat.gitbooks.io/typescript/docs/async-await.html
   async delay(milliseconds: number, count: number): Promise<number> {
     return new Promise<number>(resolve => {
       setTimeout(() => {
@@ -61,18 +61,12 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  updateEnemyDisplays() {
-    this.enemyDisplays = [[], this.enemyDisplays[1]];
-    for (let entity of this.room.filter(x => x.side != "human")) {
-      this.enemyDisplays[0].push(entity);
-    }
-  }
-
   // Function that returns a random int up to x
   rndInt(x: number) {
     return Math.round(Math.random() * x)
   }
 
+  //Determines the color of the enemy Entity based on amount of health
   calcColor(entity, health) {
     if (entity != null) {
       if (entity.health >= health)
@@ -91,11 +85,34 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     return '';
   }
 
-  // Function to detect the current Health of the Current Player
-  healthCalculation(currentHealth, maxHealth) {
-    return Math.round((currentHealth / maxHealth) * 100);
+  //Updates the All Displays
+  updateDisplays(defender) {
+    let charIndex = this.characterDisplays.characters.indexOf(defender);
+    let entityIndex = this.enemyDisplays.entities.indexOf(defender);
+    if (charIndex != -1)
+      for (let key of Object.keys(this.characterDisplays))
+        this.characterDisplays[key].splice(charIndex, 1);
+    if (entityIndex != -1)
+      for (let key of Object.keys(this.enemyDisplays))
+        this.enemyDisplays[key].splice(entityIndex, 1);
   }
 
+  //
+  async checkDead(defender, attack, boolean) {
+    if (defender.health <= 0) {
+      this.spawnToast(defender.name, 'black', attack, true);
+      if (boolean) {
+        defender.death = true;
+        await this.delay(1000, 1);
+        defender.death = false;
+      }
+      this.turns.splice(this.turns.indexOf(defender), 1);
+      this.room.splice(this.room.indexOf(defender), 1);
+      this.updateDisplays(defender);
+    }
+  }
+
+  // Checks if the Ability is from an Item, and returns that Item's Name
   checkItemAbility(character, ability) {
     let itemName = '';
     if (character.inventory.length > 0) {
@@ -114,16 +131,22 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     return itemName;
   }
 
+  // Needs to be fixed
+  checkLastActiveAbility(ability) {
+    if (ability.currentCooldown > 0)
+      return false;
+    return true;
+  }
+
   // Function to detect which player is active, and return true or false on it.
   checkPlayerActive(character) {
     if (this.turns != undefined)
       return this.turns[0] === character;
   }
 
-  checkLastActiveAbility(ability) {
-    if (ability.currentCooldown > 0)
-      return false;
-    return true;
+  // Function to detect the current Health of the Current Player
+  healthCalculation(currentHealth, maxHealth) {
+    return Math.round((currentHealth / maxHealth) * 100);
   }
 
   // Creates an hit object to display Players damage on a given target
@@ -136,7 +159,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     setTimeout(() => this.hits.splice(this.hits.indexOf(obj), 1), 1200);
   };
 
-  // Creates and pushes a Toast that displays what happened during each turn
+  // Creates and pushes a Toast that displays what happened during each turn will be updated
   spawnToast(char: string, style: string, ability: string, dead: boolean, damage?: number, char2?: string) {
     if (!dead) {
       if (damage >= 0)
@@ -235,31 +258,8 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
         entity.activeEffects.splice(index, 1);
       effects.push(this.effectCalculation(entity, effect));
     }
+    this.checkDead(entity, '', true);
     return effects;
-  }
-
-  // Starts the Game
-  startGame() {
-    if (this.turns[0].side === 'human') {
-      document.getElementById(this.turns[0].name + 'id').classList.add('startTurn');
-    }
-    if (this.turns[0].side === 'vampire') {
-      this.entityAttack(this.turns[0]);
-      this.turns.splice(0, 1);
-      this.turnSystem();
-    }
-  }
-
-  async checkDead(defender, attack) {
-    if (defender.health <= 0) {
-      this.spawnToast(defender.name, 'black', attack, true);
-      defender.death = true;
-      await this.delay(1000, 1);
-      defender.death = false;
-      this.turns.splice(this.turns.indexOf(defender),1);
-      this.room.splice(this.room.indexOf(defender), 1);
-      this.updateEnemyDisplays();
-    }
   }
 
   // Entity Ai
@@ -274,28 +274,31 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       let damage = attack[2];
       window['M'].toast({html: (defender.name + ' took ' + damage + ' damage'), classes: 'red'});
       this.updateReport(false, defender.name, damage);
-      this.checkDead(defender, attack[1].description);
+      this.checkDead(defender, attack[1].description, true);
     }
   }
 
   // The click action for the player
   attack(event, defender) {
     if (this.turns.length >= 1) {
-      if (this.turns[0].side==="human" && defender!=this.turns[0] && !(this.turns[0].health<=0)) {
+      let attacker = this.turns[0];
+      if (attacker.side === "human" && defender != attacker && !(attacker.health <= 0)) {
         let indexSelected = window['$'](":radio[name='abilities']").index(window['$'](":radio[name='abilities']:checked"));
-        document.getElementById(this.turns[0].name + 'id').classList.remove('startTurn');
-        document.getElementById(this.turns[0].name + 'id').classList.add('endTurn');
-        let attack = this.damageCalculation(this.turns[0], defender, indexSelected);
-        if (attack === null) {
-          this.spawnStatus(event, "Missed");
-          this.updateReport(true);
-        }
-        else {
-          let damage = attack[2];
-          this.updateReport(false, defender.name, damage);
-          this.spawnStatus(event, damage);
-          this.spawnToast(this.turns[0].name, 'green', attack[1].description, false, damage, defender.name);
-          this.checkDead(defender, attack[1].description);
+        if (indexSelected != -1) {
+          document.getElementById(attacker.name + 'id').classList.remove('startTurn');
+          document.getElementById(attacker.name + 'id').classList.add('endTurn');
+          let attack = this.damageCalculation(attacker, defender, indexSelected);
+          if (attack === null) {
+            this.spawnStatus(event, "Missed");
+            this.updateReport(true);
+          }
+          else {
+            let damage = attack[2];
+            this.updateReport(false, defender.name, damage);
+            this.spawnStatus(event, damage);
+            this.spawnToast(attacker.name, 'green', attack[1].description, false, damage, defender.name);
+            this.checkDead(defender, attack[1].description, true);
+          }
         }
       } else {
         return event;
@@ -303,6 +306,18 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       this.turns.splice(0, 1);
     }
     this.turnSystem();
+  }
+
+  // Starts the Game
+  startGame() {
+    if (this.turns[0].side === 'human') {
+      document.getElementById(this.turns[0].name + 'id').classList.add('startTurn');
+    }
+    if (this.turns[0].side === 'vampire') {
+      this.entityAttack(this.turns[0]);
+      this.turns.splice(0, 1);
+      this.turnSystem();
+    }
   }
 
   skipTurn(bool): boolean {
@@ -339,6 +354,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     }
     let entity = this.room[this.room.indexOf(this.turns[0])];
     if (entity != undefined) {
+      this.checkDead(entity, '', false);
       for (let ability of entity.abilities)
         ability.currentCooldown--;
       if (this.skipTurn(true))
@@ -351,17 +367,14 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       } else {
         if (entity.activeEffects.length > 0)
           this.effectTurn(entity);
-        this.checkDead(this.room.indexOf(this.turns[0]), '');
-        if (entity.health < 1) {
-          this.spawnToast(entity.name, 'black', 'effect', true);
-          this.room.splice(this.room.indexOf(this.turns[0]), 1);
-        }
         this.entityAttack(entity);
         this.turns.splice(0, 1);
         await this.delay(1000, 1);
         this.turnSystem();
       }
     } else {
+      this.room.splice(this.room.indexOf(entity), 1);
+      this.turns.splice(this.room.indexOf(entity), 1);
       this.sortTurns();
       this.turnSystem();
     }
