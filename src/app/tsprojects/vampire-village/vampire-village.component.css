@@ -24,6 +24,11 @@ label > input:checked + div{
   text-transform: unset;
   margin-bottom: 16px;
 }
+.ability-disabled-ui-cooldown {
+  position: fixed;
+  bottom: 4.6%;
+  color: dimgray;
+}
 .character-stat{
   margin-top:30%;
   margin-right: 16px;
