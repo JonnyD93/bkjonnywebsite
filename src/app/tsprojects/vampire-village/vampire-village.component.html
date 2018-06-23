@@ -6,8 +6,10 @@
              [style.background-color]="calcColor(entity,enemyDisplays[1][i])" (click)="attack($event,entity)">
           {{entity.name}}
         </div>
-        <div *ngIf="!entity.death"><div class="entity-effect" *ngFor="let effect of enemyDisplays[0][i].activeEffects; let j = index"
-                        [style.background-color]="effect.color" [style.z-index]="-1-j" [style.bottom]="36-j+'px'"></div></div>
+        <div *ngIf="!entity.death">
+          <div class="entity-effect" *ngFor="let effect of enemyDisplays[0][i].activeEffects; let j = index"
+               [style.background-color]="effect.color" [style.z-index]="-1-j" [style.bottom]="36-j+'px'"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -46,9 +48,11 @@
              *ngIf="checkItemAbility(character,ability)!=''">{{checkItemAbility(character,ability)}}</div>
       </div>
       </label>
-      <div *ngIf="ability.currentCooldown>0" class="btn ability-disabled-ui disabled">{{ability.name}}<div
-        class='itemName'
-        *ngIf="checkItemAbility(character,ability)!=''">{{checkItemAbility(character,ability)}}</div></div>
+      <div *ngIf="ability.currentCooldown>0" class="btn ability-disabled-ui disabled">{{ability.name}}
+        <div class='itemName' *ngIf="checkItemAbility(character,ability)!=''">{{checkItemAbility(character,ability)}}
+        </div>
+        <span class="ability-disabled-ui-cooldown"> {{ability.currentCooldown}}</span>
+      </div>
     </span>
     <div class="progress">
       <div class="determinate" [style.width]="(healthCalculation(character.health,characterDisplays[2][i]))+'%'"></div>
@@ -56,7 +60,7 @@
   </nav>
 </div>
 <div *ngFor="let character of enemyDisplays[0]; let i = index">
-  <nav class="entity-ui"  *ngIf="checkPlayerActive(character)">
+  <nav class="entity-ui" *ngIf="checkPlayerActive(character)">
     <span class="entity-name">{{character.name}}</span>
     <div class="progress">
       <div class="determinate" [style.width]="(healthCalculation(character.health,enemyDisplays[1][i]))+'%'"></div>
