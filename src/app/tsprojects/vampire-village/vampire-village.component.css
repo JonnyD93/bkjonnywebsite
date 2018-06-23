@@ -83,18 +83,12 @@ label > input:checked + div{
 .effect{
   position: absolute;
   top: -5px;
-
   width: 32px;
   height: 32px;
   border-radius: 4px;
   box-shadow: black 1px 2px 8px;
 }
-.startTurn{
-  animation: turnStart 1s forwards;
-}
-.endTurn{
-  animation: turnEnd 1s;
-}
+
 .skip-turn-btn{
   position: absolute;
   top: 0;
@@ -110,10 +104,6 @@ label > input:checked + div{
 .skip-turn-icon {
   line-height: inherit;
   }
-.playerDead{
-  animation-delay: 1s;
-  animation: playerDeath 3s forwards;
-}
 .vampire{
   background-color: gray;
 }
@@ -148,77 +138,69 @@ label > input:checked + div{
   margin-top: 8px;
 }
 .status{
-  display: block;
-  position: absolute;
+  position: fixed;
+  right: 6px;
   color: white;
-  background-color: rgba(0,0,0,0.7);
-  padding: 5px;
-  text-shadow: 1px 1px gray;
-  font-size: 30px;
-  font-weight: bold;
-  border-radius: 7px;
-  animation: status 1.3s;
+  padding: 5px 10px;
+  font-size: 16px;
+  border-radius: 2px;
+  box-shadow: 0px 2px 2px grey;
+  -webkit-animation: fade-out-right 1s forwards;
+  -o-animation: fade-out-right 1s forwards;
+  animation: fade-out-right 1s forwards;
+  animation-delay: 4s;
 }
-
-
-@keyframes status {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-100px);
-  }
-  0%, 20%, 40%, 60%, 80%, 100% {
-    color: gray;
-  }
-  10%, 30%, 50%, 70%, 90% {
-    color: white;
-  }
+.activeTurn{
+  animation: turnStart 1s forwards;
+}
+.endTurn{
+  animation: turnEnd 1s;
 }
 @keyframes turnStart{
   0%{
-    box-shadow: 0px 0px 0px black;
     transform: translateY(0);
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
   }
   100%{
-    box-shadow: 0px 0px 20px gold;
     transform: translateY(-32px);
+    box-shadow: 0px 0px 20px gold;
   }
 }
 @keyframes turnEnd{
   0%{
-    box-shadow: 0px 0px 20px black;
     transform: translateY(-32px);
+    box-shadow: 0px 0px 20px gold;
+
   }
   100%{
-    box-shadow: 0px 0px 0px gold;
     transform: translateY(0);
-  }
-}
-@keyframes playerDeath{
-  10%{
-    transform: translateY(10px) rotate(144deg);
-  }
-  40%{
-    transform: translateY(-60px) translateX(60px) rotate(576deg);
-  }
-  100%{
-    background-color: black;
-    transform: translateY(300px) translateX(60px) rotate(1440deg);
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
   }
 }
 
 .death{
-  animation: fade-out 1s;
+  animation: fade-out-down 1s;
 }
 
-@keyframes fade-out {
-  0%{
+@keyframes fade-out-down {
+  0% {
     transform: translateY(0px);
     opacity: 1;
   }
-  100%{
+  100% {
     transform: translateY(128px);
+    opacity: 0;
+  }
+}
+@keyframes fade-out-right {
+  0%{
+    transform: translateX(0px);
+    opacity: 1;
+  }
+  100%{
+    transform: translateX(128px);
     opacity:0;
   }
 }

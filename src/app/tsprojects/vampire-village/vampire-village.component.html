@@ -3,7 +3,7 @@
     <div style="padding-top: 32px;">
       <div class="col s2" style="z-index: 10" *ngFor="let entity of enemyDisplays.entities; let i = index">
         <div class="btn vampire" [ngClass]="{death: entity.death}"
-             [style.background-color]="calcColor(entity,enemyDisplays.healths[i])" (click)="attack($event,entity)">
+             [style.background-color]="calcColor(entity,enemyDisplays.healths[i])" (click)="attack(entity)">
           {{entity.name}}
         </div>
         <div *ngIf="!entity.death"><div class="entity-effect" *ngFor="let effect of enemyDisplays.entities[i].activeEffects; let j = index"
@@ -12,19 +12,19 @@
     </div>
   </div>
   <div class="row" style="z-index: 10">
-    <div *ngFor="let keys of characterDisplays.keys; let i = index" [id]="characterDisplays.characters[i].name + 'id'">
-      <div class="card character-stat col s2">
-        <div *ngFor="let item of keys">
-          <div class="card-title" *ngIf="item =='name'">{{characterDisplays.characters[i][item]}}<i
-            class="material-icons downArrow" (click)="attack($event,this.characterDisplays.characters[i])">my_location</i></div>
+    <div *ngFor="let character of characterDisplays.characters; let i = index" >
+      <div class="card character-stat col s2" [ngClass]="{death: character.death, activeTurn: character.activeTurn, endTurn:!character.activeTurn}">
+        <div *ngFor="let key of characterDisplays.keys[0]">
+          <div class="card-title" *ngIf="key =='name'">{{character[key]}}<i
+            class="material-icons downArrow " (click)="attack(character)">my_location</i></div>
           <div class="stats">
             <div
-              *ngIf="item != 'side'&& item != 'name' && item != 'abilities' && item !='activeEffects' && item !='inventory'">
-              {{item.charAt(0).toUpperCase() + item.slice(1) + ": "+ characterDisplays.characters[i][item]}}
+              *ngIf="key != 'side'&& key != 'name' && key != 'abilities' && key !='activeEffects' && key !='inventory'">
+              {{key.charAt(0).toUpperCase() + key.slice(1) + ": "+ character[key]}}
             </div>
           </div>
-          <div *ngIf="item == 'activeEffects'">
-            <div class="effect" *ngFor="let effect of characterDisplays.characters[i].activeEffects; let j = index"
+          <div *ngIf="key == 'activeEffects'">
+            <div class="effect" *ngFor="let effect of character.activeEffects; let j = index"
                  [style.background-color]="effect.color" [style.z-index]="-1-j" [style.left]="(j*10)-5+'px'"></div>
           </div>
         </div>
@@ -65,4 +65,4 @@
     </div>
   </nav>
 </div>
-<span class="status" *ngFor="let hit of hits" [ngStyle]="hit.styles">{{hit.statusText}}</span>
+<span class="status dissmissable" *ngFor="let hit of hits; let i = index" [ngStyle]="hit.styles" [style.top]="10+(i*5)+'%'">{{hit.description}}</span>

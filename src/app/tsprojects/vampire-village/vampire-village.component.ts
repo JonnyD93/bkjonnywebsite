@@ -16,12 +16,12 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   // The entire list of what the database will hold will be removed from here
   // PlayerData: { level: number, experience: number, inventory: any[], characters: any[]};
   // Array for all entitys in the game
-  room: Entity[] = [];
+  room: any[] = [];
   // Each characters different type of Object Keys, as a separate variable
   characterDisplays: any = {keys: [], characters: [], healths: []};
   enemyDisplays: any = {entities: [], healths: []};
   // The turns variable is populated with the turns of the game
-  turns: Entity[] = [];
+  turns: any[] = [];
   // The report of the match --- Not important yet
   report: any[] = [];
   // The hits that pop up when a creature is attacked.
@@ -52,7 +52,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     this.startGame();
   }
 
-  // Adds a Delay to the JS Cite https://basarat.gitbooks.io/typescript/docs/async-await.html
+  // Adds a Delay to the TS Cite https://basarat.gitbooks.io/typescript/docs/async-await.html
   async delay(milliseconds: number, count: number): Promise<number> {
     return new Promise<number>(resolve => {
       setTimeout(() => {
@@ -71,15 +71,10 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     if (entity != null) {
       if (entity.health >= health)
         return '#000000';
-      if (entity.health >= health * .8 && entity.health <= health)
-        return '#222222';
-      if (entity.health >= health * .6 && entity.health <= health * .8)
-        return '#444444';
-      if (entity.health >= health * .4 && entity.health <= health * .6)
-        return '#666666';
-      if (entity.health >= health * .2 && entity.health <= health * .4)
-        return '#888888';
-      if (entity.health <= health * .2)
+      for(let x = 0; x<=9; x++)
+        if(entity.health >= health * (0.9-(.1*x)) && entity.health <= health * (1-(.1*x)))
+          return '#' + x + x + x + x + x + x;
+      if (entity.health <= health * .1)
         return '#aaaaaa';
     }
     return '';
@@ -87,25 +82,21 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
 
   //Updates the All Displays
   updateDisplays(defender) {
-    let charIndex = this.characterDisplays.characters.indexOf(defender);
-    let entityIndex = this.enemyDisplays.entities.indexOf(defender);
-    if (charIndex != -1)
+    if(this.characterDisplays.characters.indexOf(defender) != -1)
       for (let key of Object.keys(this.characterDisplays))
-        this.characterDisplays[key].splice(charIndex, 1);
-    if (entityIndex != -1)
+        this.characterDisplays[key].splice(this.characterDisplays.characters.indexOf(defender), 1);
+    else
       for (let key of Object.keys(this.enemyDisplays))
-        this.enemyDisplays[key].splice(entityIndex, 1);
+        this.enemyDisplays[key].splice(this.enemyDisplays.entities.indexOf(defender), 1);
   }
 
-  //
-  async checkDead(defender, attack, boolean) {
+  // Checks if the entity is dead
+  async checkDead(defender) {
     if (defender.health <= 0) {
-      this.spawnToast(defender.name, 'black', attack, true);
-      if (boolean) {
-        defender.death = true;
-        await this.delay(1000, 1);
-        defender.death = false;
-      }
+      this.spawnToast(defender.name + ' died', 'black');
+      defender.death = true;
+      await this.delay(1000, 1);
+      defender.death = false;
       this.turns.splice(this.turns.indexOf(defender), 1);
       this.room.splice(this.room.indexOf(defender), 1);
       this.updateDisplays(defender);
@@ -116,17 +107,14 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   checkItemAbility(character, ability) {
     let itemName = '';
     if (character.inventory.length > 0) {
-      for (let item of character.inventory) {
-        if (item.itemAbilities != null) {
-          for (let abilityItem of item.itemAbilities) {
+      for (let item of character.inventory)
+        if (item.itemAbilities != null)
+          for (let abilityItem of item.itemAbilities)
             if (ability === abilityItem)
-              itemName += item.name + ' ';
-          }
-        }
-      }
+              itemName = item.name;
       if (itemName === '')
         return '';
-      return '( ' + itemName + ')';
+      return '( ' + itemName + ' )';
     }
     return itemName;
   }
@@ -150,40 +138,12 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   }
 
   // Creates an hit object to display Players damage on a given target
-  spawnStatus = (event, statusText) => {
-    let obj = {
-      styles: {left: event.clientX + 10 + 'px', top: event.clientY + 'px'},
-      statusText
-    };
+   spawnToast( description, style){
+   let obj = {styles: {backgroundColor: style}, description: description};
     this.hits.push(obj);
-    setTimeout(() => this.hits.splice(this.hits.indexOf(obj), 1), 1200);
-  };
-
-  // Creates and pushes a Toast that displays what happened during each turn will be updated
-  spawnToast(char: string, style: string, ability: string, dead: boolean, damage?: number, char2?: string) {
-    if (!dead) {
-      if (damage >= 0)
-        return window['M'].toast({
-          html: (char + ' ' + ability + ' ' + char2 + ' for ' + damage + ' damage'),
-          classes: style
-        });
-      else
-        return window['M'].toast({
-          html: (char2 + ' blocked ' + char + ' by ' + Math.abs(damage) + ' damage.'),
-          classes: 'light-blue'
-        });
-    }
-    if (dead)
-      return window['M'].toast({html: (char + ' died'), classes: style});
-  }
-
-  // Will be used after the battle concludes
-  updateReport(Missed: boolean, Defender?: string, damage?: number) {
-    if (Missed)
-      this.report.push(this.turns[0].name + ' Missed.');
-    else
-      this.report.push(this.turns[0].name + ' hit ' + Defender + ' for ' + damage);
-  }
+    this.report.push(description);
+    setTimeout(() => this.hits.splice(this.hits.indexOf(obj), 1), 5000);
+   }
 
   // Sorts the Turns based on Agility
   sortTurns() {
@@ -199,43 +159,44 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  damageCalculation(attacker: Entity, defender: Entity, abilitySelected: number): [Entity, Ability, number] {
+  damageCalculation(attacker: Entity, defender: Entity, abilitySelected: number) {
     let ability = attacker.abilities[abilitySelected];
     ability.currentCooldown = ability.cooldown;
     let type = ability.type;
     if ((attacker.accuracy >= this.rndInt(100 + defender.agility))) {
-      let defend = this.rndInt(defender.defense);
       let attack = Math.floor(attacker.attack * attacker.abilities[abilitySelected].damageMultiplier);
-      defender = this.applyEffect(defender, ability);
+      this.applyEffect(defender, ability);
       if (type === "health") {
-        if (attack < 0) {
+        let defend = this.rndInt(defender.defense);
+        if (attack < 0)
           defender.health -= attack;
-          return [defender, attacker.abilities[abilitySelected], attack];
-        }
-        if ((attack - defend) >= 0)
+        if ((attack - defend) <= 0)
+          this.spawnToast((defender.name + ' blocked ' + attacker.name + ' by ' + Math.abs(attack-defend)), 'blue');
+        if ((attack - defend) > 0) {
+          this.spawnToast((attacker.name + ' ' + ability.description + ' ' + defender.name + ' for ' + (attack - defend)), 'red');
           defender.health -= (attack - defend);
-        return [defender, attacker.abilities[abilitySelected], attack - defend];
+          this.checkDead(defender);
+        }
       }
       else {
         if (defender[type] - attacker.attack >= 0) {
           defender[type] -= attack;
-          return [defender, attacker.abilities[abilitySelected], attack];
         }
         else {
           defender[type] = 0;
-          return [defender, attacker.abilities[abilitySelected], attack];
         }
       }
+    } else {
+      this.spawnToast(attacker.name + ' missed', '#00bb00');
     }
-    // Returns null if the attacker misses
-    return null;
   }
 
   // Apples the effect to the person defending
-  applyEffect(defender: Entity, ability: Ability): Entity {
-    if (ability.effect != null && (ability.effectChance >= this.rndInt(100)))
+  applyEffect(defender: Entity, ability: Ability) {
+    if (ability.effect != null && (ability.effectChance >= this.rndInt(100))) {
+      this.spawnToast(defender.name + ' is now ' + ability.effect.name, ability.effect.color);
       defender.activeEffects.push(JSON.parse(JSON.stringify(ability.effect)));
-    return defender;
+    }
   }
 
   // Calculates the Effect damage for that turn
@@ -258,7 +219,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
         entity.activeEffects.splice(index, 1);
       effects.push(this.effectCalculation(entity, effect));
     }
-    this.checkDead(entity, '', true);
+    this.checkDead(entity);
     return effects;
   }
 
@@ -267,42 +228,22 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     let enemies = this.room.filter(x => x.side != entity.side);
     let index = Math.floor(Math.random() * enemies.length);
     let defender = this.room[this.room.indexOf(enemies[index])];
-    let attack = this.damageCalculation(this.turns[0], defender, this.rndInt(entity.abilities.length - 1));
-    if (attack === null)
-      this.updateReport(true);
-    else {
-      let damage = attack[2];
-      window['M'].toast({html: (defender.name + ' took ' + damage + ' damage'), classes: 'red'});
-      this.updateReport(false, defender.name, damage);
-      this.checkDead(defender, attack[1].description, true);
-    }
+    this.damageCalculation(this.turns[0], defender, this.rndInt(entity.abilities.length - 1));
   }
 
   // The click action for the player
-  attack(event, defender) {
+  attack(defender) {
     if (this.turns.length >= 1) {
       let attacker = this.turns[0];
       if (attacker.side === "human" && defender != attacker && !(attacker.health <= 0)) {
+        attacker.activeTurn = false;
         let indexSelected = window['$'](":radio[name='abilities']").index(window['$'](":radio[name='abilities']:checked"));
         if (indexSelected != -1) {
-          document.getElementById(attacker.name + 'id').classList.remove('startTurn');
-          document.getElementById(attacker.name + 'id').classList.add('endTurn');
-          let attack = this.damageCalculation(attacker, defender, indexSelected);
-          if (attack === null) {
-            this.spawnStatus(event, "Missed");
-            this.updateReport(true);
-          }
-          else {
-            let damage = attack[2];
-            this.updateReport(false, defender.name, damage);
-            this.spawnStatus(event, damage);
-            this.spawnToast(attacker.name, 'green', attack[1].description, false, damage, defender.name);
-            this.checkDead(defender, attack[1].description, true);
-          }
+          this.damageCalculation(attacker, defender, indexSelected);
+          //this.spawnStatus(event, damage);
         }
-      } else {
-        return event;
       }
+
       this.turns.splice(0, 1);
     }
     this.turnSystem();
@@ -311,9 +252,8 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   // Starts the Game
   startGame() {
     if (this.turns[0].side === 'human') {
-      document.getElementById(this.turns[0].name + 'id').classList.add('startTurn');
-    }
-    if (this.turns[0].side === 'vampire') {
+
+    } else {
       this.entityAttack(this.turns[0]);
       this.turns.splice(0, 1);
       this.turnSystem();
@@ -322,8 +262,6 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
 
   skipTurn(bool): boolean {
     if (!bool && this.turns[0].side === 'human') {
-      document.getElementById(this.turns[0].name + 'id').classList.remove('startTurn');
-      document.getElementById(this.turns[0].name + 'id').classList.add('endTurn');
       this.turns.splice(0, 1);
       this.turnSystem();
     }
@@ -354,16 +292,15 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     }
     let entity = this.room[this.room.indexOf(this.turns[0])];
     if (entity != undefined) {
-      this.checkDead(entity, '', false);
+      this.checkDead(entity);
       for (let ability of entity.abilities)
         ability.currentCooldown--;
       if (this.skipTurn(true))
         return;
       if (entity.side === 'human') {
-        document.getElementById(this.turns[0].name + 'id').classList.remove('endTurn');
-        document.getElementById(this.turns[0].name + 'id').classList.add('startTurn');
         if (entity.activeEffects.length > 0)
           this.effectTurn(entity);
+        entity.activeTurn = true;
       } else {
         if (entity.activeEffects.length > 0)
           this.effectTurn(entity);
