@@ -228,7 +228,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     let enemies = this.room.filter(x => x.side != entity.side);
     let index = Math.floor(Math.random() * enemies.length);
     let defender = this.room[this.room.indexOf(enemies[index])];
-    this.damageCalculation(this.turns[0], defender, this.rndInt(entity.abilities.length - 1));
+    this.damageCalculation(entity, defender, this.rndInt(entity.abilities.length - 1));
   }
 
   // The click action for the player
@@ -236,14 +236,13 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     if (this.turns.length >= 1) {
       let attacker = this.turns[0];
       if (attacker.side === "human" && defender != attacker && !(attacker.health <= 0)) {
-        attacker.activeTurn = false;
         let indexSelected = window['$'](":radio[name='abilities']").index(window['$'](":radio[name='abilities']:checked"));
         if (indexSelected != -1) {
+          attacker.activeTurn = false;
           this.damageCalculation(attacker, defender, indexSelected);
           //this.spawnStatus(event, damage);
         }
       }
-
       this.turns.splice(0, 1);
     }
     this.turnSystem();

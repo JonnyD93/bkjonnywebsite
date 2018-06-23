@@ -65,4 +65,4 @@
     </div>
   </nav>
 </div>
-<span class="status dissmissable" *ngFor="let hit of hits; let i = index" [ngStyle]="hit.styles" [style.top]="10+(i*5)+'%'">{{hit.description}}</span>
+<span class="status" *ngFor="let hit of hits; let i = index" [ngStyle]="hit.styles" [style.top]="10+(i*5)+'%'">{{hit.description}}</span>
