@@ -39,18 +39,37 @@ label > input:checked + div{
 .abilities-ui{
   position: fixed;
   bottom: 0%;
+  width: inherit;
+  padding-right: 10px;
+  margin: 0 0 10px 10px;
   background-color: white;
-}
-.effect{
-  position: absolute;
-  border-radius: 100%;
-  left: 80%;
-  top: 0%;
 }
 .player-ui{
   padding-left: 64px;
   font-size: 32px;
   color: black;
+}
+.entity-ui{
+  position: fixed;
+  bottom: 0%;
+  right: 0%;
+  padding-right: 10px;
+  width: inherit;
+  margin: 0 10px 10px 0;
+  background-color: white;
+}
+.entity-name{
+  padding: 0px 10px;
+  font-size: 32px;
+  color: black;
+}
+.entity-effect{
+  position: relative;
+  left:-4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 3px;
+  box-shadow: black 1px 2px 2px;
 }
 .itemName{
   margin-top: -26px;
@@ -114,6 +133,7 @@ label > input:checked + div{
 .progress{
   background-color: red;
   height: 8px;
+  width:calc(100% + 10px);;
   margin-top: -75px;
 }
 .progress .determinate {
@@ -180,5 +200,20 @@ label > input:checked + div{
   100%{
     background-color: black;
     transform: translateY(300px) translateX(60px) rotate(1440deg);
+  }
+}
+
+.death{
+  animation: fade-out 1s;
+}
+
+@keyframes fade-out {
+  0%{
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  100%{
+    transform: translateY(128px);
+    opacity:0;
   }
 }

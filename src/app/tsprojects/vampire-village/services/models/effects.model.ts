@@ -6,6 +6,7 @@ export class Effects {
   private VenomAttack: Effect = new Effect('VenomEffect','health',10,3,"#00cc00");
   private strongVenomAttack: Effect = new Effect('VenomEffect','health',25,3,"#00aa00");
   private weakBleedEffect: Effect = new Effect('BleedEffect','health', 10,2,"#cc1111");
+  private BleedEffect: Effect = new Effect('BleedEffect','health', 20,2,"#aa1111");
 
   constructor(){}
 
