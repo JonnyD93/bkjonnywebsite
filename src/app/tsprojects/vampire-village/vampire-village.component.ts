@@ -68,16 +68,8 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
 
   //Determines the color of the enemy Entity based on amount of health
   calcColor(entity, health) {
-    if (entity != null) {
-      if (entity.health >= health)
-        return '#000000';
-      for(let x = 0; x<=9; x++)
-        if(entity.health >= health * (0.9-(.1*x)) && entity.health <= health * (1-(.1*x)))
-          return '#' + x + x + x + x + x + x;
-      if (entity.health <= health * .1)
-        return '#aaaaaa';
-    }
-    return '';
+      let x = 100-((entity.health / health) * 100);
+      return `rgb(${x}%,${x}%,${x}%)`;
   }
 
   //Updates the All Displays

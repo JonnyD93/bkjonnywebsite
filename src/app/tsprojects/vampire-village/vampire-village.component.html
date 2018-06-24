@@ -6,8 +6,7 @@
              [style.background-color]="calcColor(entity,enemyDisplays.healths[i])" (click)="attack(entity)">
           {{entity.name}}
         </div>
-        <div *ngIf="!entity.death"><div class="entity-effect" *ngFor="let effect of enemyDisplays.entities[i].activeEffects; let j = index"
-                        [style.background-color]="effect.color" [style.z-index]="-1-j" [style.bottom]="36-j+'px'"></div></div>
+        <div *ngIf="!entity.death"><div class="entity-effect" *ngFor="let effect of enemyDisplays.entities[i].activeEffects; let j = index" [style.background-color]="effect.color" [style.z-index]="-1-j" [style.bottom]="36-j+'px'"></div></div>
       </div>
     </div>
   </div>
