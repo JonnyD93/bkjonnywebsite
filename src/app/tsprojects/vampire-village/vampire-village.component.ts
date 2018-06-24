@@ -83,8 +83,10 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   //Updates the All Displays
   updateDisplays(defender) {
     if(this.characterDisplays.characters.indexOf(defender) != -1)
-      for (let key of Object.keys(this.characterDisplays))
+      Object.keys(this.characterDisplays).forEach((key)=>{
         this.characterDisplays[key].splice(this.characterDisplays.characters.indexOf(defender), 1);
+      });
+
     else
       for (let key of Object.keys(this.enemyDisplays))
         this.enemyDisplays[key].splice(this.enemyDisplays.entities.indexOf(defender), 1);
@@ -106,16 +108,16 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   // Checks if the Ability is from an Item, and returns that Item's Name
   checkItemAbility(character, ability) {
     let itemName = '';
-    if (character.inventory.length > 0) {
-      for (let item of character.inventory)
+    if (character.inventory.length > 0)
+      character.inventory.forEach ((item)=> {
         if (item.itemAbilities != null)
-          for (let abilityItem of item.itemAbilities)
+          item.itemAbilities.forEach ((abilityItem)=> {
             if (ability === abilityItem)
-              itemName = item.name;
+              itemName = item.name;});
       if (itemName === '')
         return '';
       return '( ' + itemName + ' )';
-    }
+    });
     return itemName;
   }
 
@@ -148,8 +150,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   // Sorts the Turns based on Agility
   sortTurns() {
     this.turns = [];
-    for (let entity of this.room)
-      this.turns.push(entity);
+    this.room.forEach((entity)=>{this.turns.push(entity);});
     this.turns.sort((a, b) => {
       if (a.agility < b.agility)
         return 1;
