@@ -19,7 +19,7 @@ export class FakeDataService {
     for(let x = 0; x<10;x++)
       characters.push(new Entity("Vampire", 'vampire', 100, 0, 3, 60, 1, [this.abilitiesService.get('venomAttack')]));
     characters[0].inventory.push(itemsService.get('dagger'));
-    characters[0].inventory.push(itemsService.get('dagger'));
+    characters[0].inventory.push(JSON.parse(JSON.stringify(itemsService.get('dagger'))));
     characters[0].inventory.push(itemsService.get('helm'));
     this.PlayerData = {level: 0, experience: 0, inventory: [], characters: characters};
     this.updateCharacters();

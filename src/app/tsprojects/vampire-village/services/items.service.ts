@@ -12,6 +12,7 @@ export class ItemsService {
     let items: any = {};
     items.helm =  new Item("Helm","Cap for ya head", "defense",0,3,null);
     items.dagger =  new Item("dagger","dagga for ya hand", "attack",0,2,[abilitiesService.get('stabAttack')]);
+    items.sword =  new Item("Sword","swwwword for ya hand", "attack",0,5,[abilitiesService.get('stabAttack'),abilitiesService.get('slashAttack')]);
     this.items = items;
   }
 
