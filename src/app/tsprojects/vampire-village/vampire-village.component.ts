@@ -106,6 +106,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       this.turns.splice(this.turns.indexOf(defender), 1);
       this.room.splice(this.room.indexOf(defender), 1);
       this.updateDisplays(defender);
+      this.endGame();
     }
   }
 
@@ -248,6 +249,14 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     }
   }
 
+  // Ends the Game
+  endGame(){
+    if(this.checkTeamDefeated()){
+      clearInterval(this.interval);
+      setTimeout(()=>{document.getElementById('report').scrollTop = document.getElementById('report').scrollHeight;},1000);
+    }
+  }
+
   skipTurn(entity) {
     if (this.turns[0] === entity) {
       this.turns.splice(0, 1);
@@ -262,6 +271,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       this.sortTurns();
       entity = this.turns[0];
     }
+
     this.interval = setInterval(() => {
       this.turnTime++;
       if (this.turnTime >= 60) {
