@@ -52,7 +52,7 @@
       </div>
     </span>
     <div class="progress">
-      <div class="determinate" [style.width]="(healthCalculation(character.health,characterDisplays.healths[i]))+'%'"></div>
+      <div class="determinate" [style.width]="(calcHealth(character.health,characterDisplays.healths[i]))+'%'"></div>
     </div>
   </nav>
 </div>
@@ -60,8 +60,14 @@
   <nav class="entity-ui"  *ngIf="checkPlayerActive(character)">
     <span class="entity-name">{{character.name}}</span>
     <div class="progress">
-      <div class="determinate" [style.width]="(healthCalculation(character.health,enemyDisplays.healths[i]))+'%'"></div>
+      <div class="determinate" [style.width]="(calcHealth(character.health,enemyDisplays.healths[i]))+'%'"></div>
     </div>
   </nav>
 </div>
 <span class="status" *ngFor="let hit of hits; let i = index" [ngStyle]="hit.styles" [style.top]="10+(i*5)+'%'">{{hit.description}}</span>
+<div class="modal-wrapper" *ngIf="(this.checkTeamDefeated())">
+  <div class="modalz">
+    <div class="modalz-text"> You Win!</div>
+    <div class="modalz-report"><div *ngFor="let text of this.report">{{text}}</div></div>
+  </div>
+</div>

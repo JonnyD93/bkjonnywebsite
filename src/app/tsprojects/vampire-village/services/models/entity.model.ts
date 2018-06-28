@@ -11,11 +11,12 @@ export class Entity {
   defense: number;
   accuracy: number;
   agility: number;
+  resistance: number;
   abilities: Ability[];
   activeEffects: Effect[];
   inventory: Item[];
 
-  constructor(name,side,health,attack, defense, accuracy, agility, abilities){
+  constructor(name,side,health,attack, defense, accuracy, agility,resistance, abilities ){
     this.name = name;
     this.side = side;
     this.health = health;
@@ -24,6 +25,7 @@ export class Entity {
     this.accuracy = accuracy;
     this.agility = agility;
     this.abilities = abilities;
+    this.resistance = resistance;
     this.activeEffects = [];
     this.inventory = [];
   }

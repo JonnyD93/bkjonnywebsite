@@ -1,15 +1,14 @@
 export class Effect {
 
   name: string;
-  type: string;
-  effectVariable: number;
+  desc: string;
   duration: number;
   color: string;
 
-  constructor(name, type, effectVariable, duration, color){
+
+  constructor(name,desc, duration, color){
     this.name = name;
-    this.type = type;
-    this.effectVariable = effectVariable;
+    this.desc = desc;
     this.duration = duration;
     this.color = color;
   }

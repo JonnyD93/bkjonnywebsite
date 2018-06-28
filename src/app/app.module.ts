@@ -27,6 +27,7 @@ import { VampireVillageInventoryComponent } from './tsprojects/vampire-village/v
 import {SnakeComponent} from "./tsprojects/snake/snake.component";
 import {ItemsService} from "./tsprojects/vampire-village/services/items.service";
 import { ClassportfolioComponent } from './classportfolio/classportfolio.component';
+import {EffectsService} from "./tsprojects/vampire-village/services/effects.service";
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -77,7 +78,7 @@ firebase.initializeApp(config);
     HttpModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [AbilitiesService, FakeDataService, ItemsService, Location, {provide: LocationStrategy, useClass: HashLocationStrategy}],
+  providers: [AbilitiesService, FakeDataService, ItemsService, EffectsService, Location, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
