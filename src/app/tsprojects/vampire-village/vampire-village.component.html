@@ -66,8 +66,12 @@
 </div>
 <span class="status" *ngFor="let hit of hits; let i = index" [ngStyle]="hit.styles" [style.top]="10+(i*5)+'%'">{{hit.description}}</span>
 <div class="modal-wrapper" *ngIf="(this.checkTeamDefeated())">
-  <div class="modalz">
+  <div class="modal-end">
     <div class="modalz-text"> You Win!</div>
     <div class="modalz-report" id="report"><div *ngFor="let text of this.report">{{text}}</div></div>
+  </div>
+</div>
+<div class="modal-wrapper">
+  <div class="modal-start">
   </div>
 </div>
