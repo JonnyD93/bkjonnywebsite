@@ -12,21 +12,24 @@ export class EffectsService {
   private effects: Effects = new Effects();
 
   bleedEffect (entity,effect){
-    console.log(Math.round( (3 / (effect.duration+1)) * entity.health * this.percentOfHealth), 'bleed');
     entity.health -= Math.round( (3 / (effect.duration+1)) * entity.health * this.percentOfHealth);
   }
   chickenEffect (entity,effect){
-    let savEntity = JSON.parse(JSON.stringify(entity));
-    Object.keys(new Entity('Chicken',entity.side,entity.health, 1,0,10,2,0,[this.abilityService.get('pluckAttack')])).forEach((key)=>{
-      entity[key] = new Entity('Chicken',entity.side,entity.health, 1,0,10,2,0,[this.abilityService.get('pluckAttack')])[key];
-    });
-    if (effect.duration < 0)
-      Object.keys(entity).forEach((key)=>{
-      return (key!='health') ? entity[key] = savEntity[key] : entity[key];
+    let chicken = new Entity('Chicken',entity.side,entity.health,1,0,20,-1,0,[this.abilityService.get('pluckAttack')]);
+    if(effect.duration >= 2) {
+      effect.entity = JSON.parse(JSON.stringify(entity));
+      chicken.activeEffects = entity.activeEffects;
+      Object.keys(chicken).forEach((key)=> {
+        entity[key] = chicken[key];
       });
+    }
+    if (effect.duration == 0) {
+      Object.keys(entity).forEach((key)=> {
+        entity[key] = (key!='health'&&key!='activeEffects') ? effect.entity[key] : entity[key];
+      });
+    }
   }
   venomEffect (entity,effect) {
-    console.log(Math.round((effect.duration+1) * entity.health * this.percentOfHealth),'venom')
    entity.health -= Math.round((effect.duration+1) * entity.health * this.percentOfHealth);
   }
 

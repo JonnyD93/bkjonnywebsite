@@ -192,14 +192,13 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   // Apples the effect to the person defending
   applyEffect(defender: Entity, ability: Ability) {
     if (ability.effect != null && (ability.effectChance >= this.rndInt(100 + defender.resistance))) {
-      this.spawnToast(`${defender.name} is now ${ability.effect.name}`, ability.effect.color);
+      this.spawnToast(`${defender.name} is now ${ability.effect.desc}`, ability.effect.color);
       defender.activeEffects.push(JSON.parse(JSON.stringify(ability.effect)));
     }
   }
 
   // Calculates the Effect damage for that turn
   effectCalculation(defender, effect) {
-    console.log(defender.activeEffects.find((eff) => eff.name === effect.name).name);
     this.effectsService.getFunction(defender.activeEffects.find((eff) => eff.name === effect.name).name, defender, effect);
     this.checkDead(defender);
   }
@@ -208,7 +207,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   effectTurn(entity) {
     entity.activeEffects.forEach((effect) => {
       effect.duration--;
-      return (effect.duration < 0) ? entity.activeEffects.splice(entity.activeEffects.indexOf(effect), 1) : this.effectCalculation(entity, effect)
+      return (effect.duration <= -1) ? entity.activeEffects.splice(entity.activeEffects.indexOf(effect), 1) : this.effectCalculation(entity, effect)
     });
   }
 
