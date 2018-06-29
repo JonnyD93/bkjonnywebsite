@@ -125,7 +125,29 @@ label > input:checked + div{
   margin-right: 4px;
   margin-bottom: 4px;
 }
-.modal-wrapper{
+.modal-start-wrapper{
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,.8);
+  position: fixed;
+  top: 0;
+  animation: fade-out 1s forwards;
+  animation-delay: 4s;
+}
+.modal-start{
+   left: 25%;
+  top: 30%;
+   position: fixed;
+  animation: fade-out-down 1s forwards;
+  animation-delay: 4s;
+  display: inline;
+ }
+.modal-start > div >  span{
+  font-size: 64px;
+  color: white;
+  text-shadow: 2px 2px 6px white;
+}
+.modal-end-wrapper{
   width: 100%;
   height: 100%;
   background-color: rgba(0,0,0,.8);
@@ -135,16 +157,6 @@ label > input:checked + div{
   -o-animation: fade-in 3s;
   animation: fade-in 3s;
 }
-.modal-start{
-   left: 12.5%;
-  top: 12.5%;
-   position: fixed;
-   background-color: rgba(100%,100%,100%,.9);
-   width: 75%;
-   height: 75%;
-   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
-   animation: fade-in-top 3s;
- }
 .modal-end{
   left: 12.5%;
   position: fixed;

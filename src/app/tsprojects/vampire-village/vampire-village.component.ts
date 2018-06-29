@@ -23,13 +23,16 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   enemyDisplays: any = {entities: [], healths: []};
   // The turns variable is populated with the turns of the game
   turns: any[] = [];
-  // The report of the match --- Not important yet
+  // The report of the match
   report: any[] = [];
   // The hits that pop up when a creature is attacked.
   hits: any = [];
+  // The amount of time for each turn
   turnTime: any = 0;
+  // The interval of the game
   interval: any;
-
+  // The sides of the game
+  game: any = {sides: [], started: false};
   constructor(private fakeData: FakeDataService, private effectsService: EffectsService) {
     // Pulling from the fake data Service
     for (let character of fakeData.PlayerData.characters)
@@ -44,6 +47,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       this.enemyDisplays.entities.push(entity);
       this.enemyDisplays.healths.push(entity.health);
     }
+    this.game.sides = this.room.map(item => item.side).filter((value, index, self) => self.indexOf(value) === index);
     // Initial setup of the game
     this.sortTurns();
   }
@@ -139,8 +143,6 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     return ((this.turns != undefined) && (this.turns[0] === character));
   }
 
-
-
   // Creates an hit object to display Players damage on a given target
   spawnToast(description, style) {
     let obj = {styles: {backgroundColor: style}, description: description};
@@ -227,10 +229,8 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       let indexSelected = window['$'](":radio[name='abilities']").index(window['$'](":radio[name='abilities']:checked"));
       if (attacker.side === "human" && defender != attacker && !(attacker.health <= 0) && (indexSelected != -1)) {
         clearInterval(this.interval);
-        attacker.activeTurn = false;
         this.damageCalculation(attacker, defender, indexSelected);
-        this.turns.splice(0, 1);
-        this.turnSystem();
+        this.skipTurn(attacker);
         //this.spawnStatus(event, damage);
       }
     }
@@ -239,14 +239,10 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   }
 
   // Starts the Game
-  startGame() {
-    let entity = this.turns[0];
-    if (entity.side === 'human') {
-    } else {
-      this.entityAttack(entity);
-      this.turns.splice(0, 1);
-      this.turnSystem();
-    }
+  async startGame() {
+    await this.delay(5000,1);
+    this.game.started = true;
+    this.turnSystem();
   }
 
   // Ends the Game
@@ -260,6 +256,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   skipTurn(entity) {
     if (this.turns[0] === entity) {
       this.turns.splice(0, 1);
+      entity.activeTurn = false;
       this.turnSystem();
     }
   }
@@ -271,12 +268,10 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       this.sortTurns();
       entity = this.turns[0];
     }
-
     this.interval = setInterval(() => {
       this.turnTime++;
       if (this.turnTime >= 60) {
         clearInterval(this.interval);
-        entity.activeTurn = false;
         this.spawnToast(`${entity.name} turn has been skipped.`, 'black');
         this.skipTurn(entity);
       }
@@ -287,13 +282,14 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       clearInterval(this.interval);
       return this.skipTurn(entity);
     }
-    if(entity.side==='human') {
-      entity.activeTurn = true;
+    entity.activeTurn = true;
+    if(entity.side==='human')
       return;
-    } else {
+    else {
       this.entityAttack(entity);
       await this.delay(800,1);
       clearInterval(this.interval);
+      entity.activeTurn = false;
       return this.skipTurn(entity);
     }
   }

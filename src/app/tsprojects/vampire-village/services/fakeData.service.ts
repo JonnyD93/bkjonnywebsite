@@ -17,8 +17,10 @@ export class FakeDataService {
     characters.push(new Entity('Howey', 'human', 65, 15, 5, 80, 0,15, [abilitiesService.get('basicAttack')]));
     characters.push(new Entity('James', 'human', 250, 10, 0, 10, 1,10, [abilitiesService.get('basicAttack'), abilitiesService.get('venomAttack')]));
     characters.push(new Entity('Thomas', 'human', 40, 30, 5, 100, 20, 6,[abilitiesService.get('basicAttack')]));
-    for(let x = 0; x<1;x++)
-      characters.push(new Entity("Vampire", 'vampire', 1000, 0, 3, 60, 1,5, [this.abilitiesService.get('venomAttack')]));
+    for(let x = 0; x<2;x++)
+      characters.push(new Entity("Vampire", 'vampire', 90, 15, 3, 70, 6,20, [this.abilitiesService.get('basicAttack'),this.abilitiesService.get('venomAttack')]));
+    for(let x = 0; x<2;x++)
+      characters.push(new Entity("Werewolf", 'werewolf', 140, 30, 0, 50, 20,30, [this.abilitiesService.get('basicAttack')]));
     characters[0].inventory.push(itemsService.get('dagger'));
     characters[0].inventory.push(itemsService.get('chickenStave'));
     characters[0].inventory.push(itemsService.get('helm'));

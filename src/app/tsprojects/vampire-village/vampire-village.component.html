@@ -2,7 +2,7 @@
   <div class="row">
     <div style="padding-top: 32px;">
       <div class="col s2" style="z-index: 10" *ngFor="let entity of enemyDisplays.entities; let i = index">
-        <div class="btn vampire" [ngClass]="{death: entity.death}"
+        <div class="btn vampire" [ngClass]="{death: entity.death,activeTurn: entity.activeTurn, endTurn:!entity.activeTurn}"
              [style.background-color]="calcColor(entity,enemyDisplays.healths[i])" (click)="attack(entity)">
           {{entity.name}}
         </div>
@@ -41,8 +41,7 @@
       <label>
       <input class="with-gap" name="abilities" type="radio" [checked]="checkLastActiveAbility(ability)"/>
       <div class="btn" *ngIf="ability.currentCooldown <= 0">{{ability.name}}
-        <div class='itemName'
-             *ngIf="checkItemAbility(character,ability)!=''">{{checkItemAbility(character,ability)}}</div>
+        <div class='itemName' *ngIf="checkItemAbility(character,ability)!=''">{{checkItemAbility(character,ability)}}</div>
       </div>
       </label>
       <div *ngIf="ability.currentCooldown>0" class="btn ability-disabled-ui disabled">{{ability.name}}
@@ -65,13 +64,17 @@
   </nav>
 </div>
 <span class="status" *ngFor="let hit of hits; let i = index" [ngStyle]="hit.styles" [style.top]="10+(i*5)+'%'">{{hit.description}}</span>
-<div class="modal-wrapper" *ngIf="(this.checkTeamDefeated())">
+<div class="modal-end-wrapper" *ngIf="(this.checkTeamDefeated())">
   <div class="modal-end">
     <div class="modalz-text"> You Win!</div>
     <div class="modalz-report" id="report"><div *ngFor="let text of this.report">{{text}}</div></div>
   </div>
 </div>
-<div class="modal-wrapper">
+<div class="modal-start-wrapper" *ngIf="!(game.started)">
   <div class="modal-start">
+    <div *ngFor="let side of game.sides; let i = index">
+      <span  *ngIf="i<(game.sides.length-1)">{{side.charAt(0).toUpperCase() + side.slice(1)}}s V.S. </span>
+      <span *ngIf="i>=(game.sides.length-1)"> {{' '+game.sides[game.sides.length-1].charAt(0).toUpperCase() + game.sides[game.sides.length-1].slice(1)}}s</span>
+  </div>
   </div>
 </div>
