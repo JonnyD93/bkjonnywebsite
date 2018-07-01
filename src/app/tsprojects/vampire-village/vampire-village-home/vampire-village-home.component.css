@@ -13,7 +13,7 @@
   border-radius: 15px;
 }
 .playgame-ui > .btn:hover{
-  padding-right: 0px;
+  transform: translateX(10px);
 }
 .content-ui {
   background-color: gray;

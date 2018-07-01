@@ -2,7 +2,7 @@
   <div class="row">
     <div style="padding-top: 32px;">
       <div class="col s2" style="z-index: 10" *ngFor="let entity of enemyDisplays.entities; let i = index">
-        <div class="btn vampire" [ngClass]="{death: entity.death,activeTurn: entity.activeTurn, endTurn:!entity.activeTurn}"
+        <div class="btn vampire" [ngClass]="{death: entity.death,activeTurn: entity.activeTurn, endTurn:!entity.activeTurn, targeted:entity.targeted}"
              [style.background-color]="calcColor(entity,enemyDisplays.healths[i])" (click)="attack(entity)">
           {{entity.name}}
         </div>
@@ -12,7 +12,7 @@
   </div>
   <div class="row" style="z-index: 10">
     <div *ngFor="let character of characterDisplays.characters; let i = index" >
-      <div class="card character-stat col s2" [ngClass]="{death: character.death, activeTurn: character.activeTurn, endTurn:!character.activeTurn}">
+      <div class="card character-stat col s2" [ngClass]="{death: character.death, activeTurn: character.activeTurn, endTurn:!character.activeTurn, targeted:character.targeted}">
         <div *ngFor="let key of characterDisplays.keys[0]">
           <div class="card-title" *ngIf="key =='name'">{{character[key]}}<i
             class="material-icons downArrow " (click)="attack(character)">my_location</i></div>

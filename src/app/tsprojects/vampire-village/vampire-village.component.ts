@@ -61,11 +61,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
 
   // Adds a Delay to the TS Cite https://basarat.gitbooks.io/typescript/docs/async-await.html
   async delay(milliseconds: number, count: number): Promise<number> {
-    return new Promise<number>(resolve => {
-      setTimeout(() => {
-        resolve(count);
-      }, milliseconds);
-    });
+    return new Promise<number>(resolve => {setTimeout(() => {resolve(count);}, milliseconds);});
   }
 
   // Function that returns a random int up to x
@@ -154,9 +150,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
   // Sorts the Turns based on Agility
   sortTurns() {
     this.turns = [];
-    this.room.forEach((entity) => {
-      this.turns.push(entity);
-    });
+    this.room.forEach((entity) => {this.turns.push(entity);});
     this.turns.sort((a, b) => {
       if (a.agility < b.agility)
         return 1;
@@ -166,11 +160,12 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  damageCalculation(attacker: Entity, defender: Entity, abilitySelected: number) {
-    let ability = attacker.abilities[abilitySelected]
+  async damageCalculation(attacker, defender, abilitySelected) {
+    let ability = attacker.abilities[abilitySelected];
     let type = ability.type;
     let attack = Math.floor(attacker.attack * attacker.abilities[abilitySelected].damageMultiplier);
     let defend = this.rndInt(defender.defense);
+    defender.targeted = true;
     ability.currentCooldown = ability.cooldown;
     if ((attacker.accuracy >= this.rndInt(100 + defender.agility))) {
       this.applyEffect(defender, ability);
@@ -190,6 +185,8 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
     }
     else
       this.spawnToast(attacker.name + ' missed', '#00bb00');
+    await this.delay(1000,1);
+    defender.targeted = false;
   }
 
   // Apples the effect to the person defending
@@ -287,7 +284,7 @@ export class VampireVillageComponent implements OnInit, AfterViewInit {
       return;
     else {
       this.entityAttack(entity);
-      await this.delay(800,1);
+      await this.delay(1000,1);
       clearInterval(this.interval);
       entity.activeTurn = false;
       return this.skipTurn(entity);
