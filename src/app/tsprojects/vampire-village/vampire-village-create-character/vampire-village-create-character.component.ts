@@ -15,7 +15,7 @@ export class VampireVillageCreateCharacterComponent implements OnInit {
   constructor(private accountService: AccountService) {
     // Character name, side, health, attack, defence, accuracy, agility, resistance, abilities
     this.accountService.checkSignedIn();
-    Object.keys(this.characterDisplayed).forEach((key)=>{this.displayKeys.push(key)});
+    Object.keys(this.characterDisplayed).forEach((key)=>{if(key!='name') {this.displayKeys.push(key)}});
     this.character = new Entity('','human','','','','','','',[]);
   }
 

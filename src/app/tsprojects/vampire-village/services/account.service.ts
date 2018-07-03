@@ -19,15 +19,23 @@ export class AccountService {
   checkSignedIn(){
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        this.loggedIn = true;
         this.user = {email: user.email, id: user.uid};
-        Object.keys(this.account).forEach(key=>{
-          this.database.ref('/vampire-village/users').find(this.user.id)
-        })
+        this.database.ref('/vampire-village/users').once('value').then((snapshot)=>{
+          if(snapshot.val() != null && snapshot.val().accountId === this.user.id)
+            this.account = snapshot.val();
+            });
+        this.loggedIn = true;
       } else
         this.loggedIn = false;
     });
-    return (this.loggedIn) ?  null : this.router.navigate(['vampire-village/login']);
+    console.log(this.account);
+    if (this.loggedIn) {
+      if (this.account === undefined)
+        this.router.navigate(['vampire-village/create-character']);
+      else
+        this.router.navigate(['vampire-village/home']);
+    } else
+      this.router.navigate(['vampire-village/login']);
   }
 
   signIn(email,password,onFinish,onError){
@@ -42,9 +50,9 @@ export class AccountService {
   createAccount(email, password, onFinish, onError){
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(() =>
-      this.signIn(email,password,
+      {this.signIn(email,password,
         () => onFinish(),
-        (error) => this.router.navigate(['vampire-village/login']))
+        (error) => this.router.navigate(['vampire-village/login']));}
     )
       .catch( (error)=> onError(error));
   }
