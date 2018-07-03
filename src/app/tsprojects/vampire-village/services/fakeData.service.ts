@@ -8,7 +8,7 @@ import {Entity} from "./models/entity.model";
 @Injectable()
 export class FakeDataService {
   users: any[];
-  PlayerData: { level: number, experience: number, inventory: any[], characters: any[] };
+  PlayerData: { accountId: string ,level: number, experience: number, inventory: any[], characters: any[] };
 
   constructor(private abilitiesService: AbilitiesService, itemsService: ItemsService) {
     let characters = [];
@@ -23,7 +23,7 @@ export class FakeDataService {
     characters[0].inventory.push(itemsService.get('dagger'));
     characters[0].inventory.push(itemsService.get('chickenStave'));
     characters[0].inventory.push(itemsService.get('helm'));
-    this.PlayerData = {level: 0, experience: 0, inventory: [], characters: characters};
+    this.PlayerData = {accountId: '',level: 0, experience: 0, inventory: [], characters: characters};
     this.updateCharacters();
   }
   updateCharacters(){

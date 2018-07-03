@@ -28,6 +28,8 @@ import {SnakeComponent} from "./tsprojects/snake/snake.component";
 import {ItemsService} from "./tsprojects/vampire-village/services/items.service";
 import { ClassportfolioComponent } from './classportfolio/classportfolio.component';
 import {EffectsService} from "./tsprojects/vampire-village/services/effects.service";
+import {AccountService} from "./tsprojects/vampire-village/services/account.service";
+import { VampireVillageCreateCharacterComponent } from './tsprojects/vampire-village/vampire-village-create-character/vampire-village-create-character.component';
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -42,6 +44,7 @@ const appRoutes: Routes = [
   { path: 'vampire-village/signup', component: VampireVillageSignUpComponent },
   { path: 'vampire-village/login', component: VampireVillageLoginComponent },
   { path: 'vampire-village/inventory', component: VampireVillageInventoryComponent },
+  { path: 'vampire-village/create-character', component: VampireVillageCreateCharacterComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full'},
   { path: '**', component: HomeComponent }
 ];
@@ -70,7 +73,8 @@ firebase.initializeApp(config);
     VampireVillageLoginComponent,
     VampireVillageSignUpComponent,
     VampireVillageInventoryComponent,
-    ClassportfolioComponent
+    ClassportfolioComponent,
+    VampireVillageCreateCharacterComponent
   ],
   imports: [
     BrowserModule,
@@ -78,7 +82,7 @@ firebase.initializeApp(config);
     HttpModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [AbilitiesService, FakeDataService, ItemsService, EffectsService, Location, {provide: LocationStrategy, useClass: HashLocationStrategy}],
+  providers: [AbilitiesService, AccountService, FakeDataService, ItemsService, EffectsService, Location, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

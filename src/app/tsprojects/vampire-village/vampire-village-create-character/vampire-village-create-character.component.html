@@ -1,0 +1,11 @@
+<div class="container">
+  <div class="row">
+    <div class="card">
+      <div class="card-title">Create Character</div>
+      <div class="input-field" *ngFor="let key of displayKeys">
+        {{key.charAt(0).toUpperCase() + key.slice(1)}}: <input [(ngModel)]="characterDisplayed[key]">
+      </div>
+      <div class="btn" (click)="createCharacter()">Submit</div>
+    </div>
+  </div>
+</div>
