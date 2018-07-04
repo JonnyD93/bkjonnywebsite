@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 import * as firebase from "firebase";
 import {Router} from "@angular/router";
 import {Player} from "./models/player.model";
+import {Item} from "./models/item.model";
+import {Entity} from "./models/entity.model";
 
 @Injectable()
 export class AccountService {
 
+
   user: any;
-  account: Player;
+  private _account: Player;
   private loggedIn: boolean;
   database: any;
 
@@ -21,16 +24,15 @@ export class AccountService {
       if (user) {
         this.user = {email: user.email, id: user.uid};
         this.database.ref('/vampire-village/users').once('value').then((snapshot)=>{
-          if(snapshot.val() != null && snapshot.val().accountId === this.user.id)
-            this.account = snapshot.val();
-            });
+          if(snapshot.val() != null)
+            this._account = snapshot.val()[this.user.id];
+        });
         this.loggedIn = true;
       } else
         this.loggedIn = false;
     });
-    console.log(this.account, this.user, this.loggedIn);
     if (this.loggedIn) {
-      if (this.account === undefined)
+      if (this._account === undefined)
         this.router.navigate(['vampire-village/create-character']);
       else
         this.router.navigate(['vampire-village/home']);
@@ -43,11 +45,12 @@ export class AccountService {
       .then(()=>onFinish())
       .catch((error)=> onError(error));
   }
+
   signOut(){
     firebase.auth().signOut();
   }
 
-  createAccount(email, password, onFinish, onError){
+  signUp(email, password, onFinish, onError){
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(() =>
       {this.signIn(email,password,
@@ -55,5 +58,18 @@ export class AccountService {
         (error) => this.router.navigate(['vampire-village/login']));}
     )
       .catch( (error)=> onError(error));
+  }
+
+  createAccount(account){
+    this.database.ref(`/vampire-village/users/${this.user.id}`).set({
+      displayName: account.displayName,
+      level: account.level,
+      experience: account.experience,
+      characters: account.characters,
+      inventory: []
+    })
+  }
+  get account(): Player {
+    return this._account;
   }
 }

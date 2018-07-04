@@ -37,7 +37,7 @@ export class VampireVillageSignUpComponent implements OnInit {
   }
   submit(){
     if(this.email != undefined && this.password != undefined && this.checkPasswordsIdentical()) {
-      this.accountService.createAccount(this.email,this.password,()=>this.router.navigate(['vampire-village/home']),
+      this.accountService.signUp(this.email,this.password,()=>this.router.navigate(['vampire-village/home']),
         (error)=>{
         this.error = error.message;
         this.resetPasswords();

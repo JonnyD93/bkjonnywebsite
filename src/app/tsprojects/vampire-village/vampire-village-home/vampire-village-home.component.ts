@@ -12,18 +12,12 @@ import {AccountService} from "../services/account.service";
 
 export class VampireVillageHomeComponent implements OnInit {
 
-  database: any;
-  userData: { level: number, experience: number, inventory: any[], characters: Entity[]};
+  displayData: any;
 
-  constructor(private fakeDataService: FakeDataService, private accountService: AccountService) {
-    this.database = firebase.database();
-    this.database.ref('vampire-village').once('value').then((snapshot) => {
-    for (var key in snapshot.val()) {
-    }
-  });
-  console.log(accountService.user);
+  constructor(private accountService: AccountService) {
   accountService.checkSignedIn();
-  console.log(accountService.user);
+  this.displayData = accountService.account;
+  console.log(this.displayData);
   }
 
   ngOnInit() {

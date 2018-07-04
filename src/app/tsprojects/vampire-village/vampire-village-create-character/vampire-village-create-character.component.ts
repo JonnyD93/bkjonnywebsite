@@ -16,8 +16,9 @@ export class VampireVillageCreateCharacterComponent implements OnInit {
   displayKeys: any[] = [];
   constructor(private accountService: AccountService) {
     // Character name, side, health, attack, defence, accuracy, agility, resistance, abilities
+    this.accountService.checkSignedIn();
     Object.keys(this.characterDisplayed.character).forEach((key)=>{if(key!='name') {this.displayKeys.push(key)}});
-    this.character = new Entity('','human','','','','','','',[]);
+    this.character = new Entity('','human','','',0,'','','',[]);
     this.account = new Player('','');
   }
 
@@ -26,11 +27,11 @@ export class VampireVillageCreateCharacterComponent implements OnInit {
 
   createCharacter(){
     Object.keys(this.characterDisplayed.character).forEach((key)=>{
-      this.character[key] = this.characterDisplayed.characters[key];
+      this.character[key] = this.characterDisplayed.character[key];
     });
     this.account.characters.push(this.character);
     this.account.displayName = this.characterDisplayed.displayName;
-    this.account.accountId = this.accountService.user.id;
+    this.accountService.createAccount(this.account);
   }
 
 }
