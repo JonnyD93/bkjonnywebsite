@@ -28,7 +28,7 @@ export class AccountService {
       } else
         this.loggedIn = false;
     });
-    console.log(this.account);
+    console.log(this.account, this.user, this.loggedIn);
     if (this.loggedIn) {
       if (this.account === undefined)
         this.router.navigate(['vampire-village/create-character']);

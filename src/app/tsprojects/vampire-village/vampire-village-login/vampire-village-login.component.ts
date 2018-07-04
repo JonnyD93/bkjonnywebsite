@@ -15,19 +15,18 @@ export class VampireVillageLoginComponent implements OnInit, AfterViewInit {
 
   constructor(private accountService: AccountService) {
     this.error = '';
-
+    this.accountService.checkSignedIn()
   }
 
   ngOnInit() {
   }
   ngAfterViewInit(){
-    this.accountService.checkSignedIn();
   }
 
   signIn(){
     this.accountService.checkSignedIn();
     if(this.email != undefined && this.password != undefined)
-      this.accountService.signIn(this.email,this.password,function(),
+      this.accountService.signIn(this.email,this.password,()=>{return;},
       (error)=>{
       this.error = error.message;
       this.password = '';
