@@ -4,10 +4,10 @@ import {DateFormatter} from "@angular/common/src/pipes/deprecated/intl";
 
 @Component({
   selector: 'app-blog-creation',
-  templateUrl: './blog-creation-page.component.html',
-  styleUrls: ['./blog-creation-page.component.css', '../admin.component.css']
+  templateUrl: './admin-create-blog-post.html',
+  styleUrls: ['./admin-create-blog-post.css', '../admin.component.css']
 })
-export class BlogCreationComponent implements OnInit, AfterViewInit {
+export class AdminCreateBlogPostComponent implements OnInit, AfterViewInit {
   //Database
   database: any;
 
