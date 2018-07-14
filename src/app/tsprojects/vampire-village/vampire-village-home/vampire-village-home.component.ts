@@ -15,12 +15,16 @@ export class VampireVillageHomeComponent implements OnInit {
   displayData: any;
 
   constructor(private accountService: AccountService) {
-  accountService.checkSignedIn();
-  this.displayData = accountService.account;
-  console.log(this.displayData);
+    accountService.checkSignedIn();
+    this.displayData = accountService.account;
+    console.log(accountService.adminCalculateAllRanks());
   }
 
   ngOnInit() {
   }
 
+  logOut(){
+    this.accountService.signOut();
+    this.accountService.checkSignedIn();
+  }
 }

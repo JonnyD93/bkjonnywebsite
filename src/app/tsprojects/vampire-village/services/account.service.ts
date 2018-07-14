@@ -63,13 +63,21 @@ export class AccountService {
   createAccount(account){
     this.database.ref(`/vampire-village/users/${this.user.id}`).set({
       displayName: account.displayName,
-      level: account.level,
-      experience: account.experience,
+      level: 0,
+      experience: 0,
+      games: {wins: 0, kills: 0, loses: 0, quits: 0},
+      rank: 0,
       characters: account.characters,
       inventory: []
-    })
+    });
+    this.router.navigate(['vampire-village/home'])
   }
   get account(): Player {
     return this._account;
+  }
+  adminCalculateAllRanks(){
+    this.database.ref(`/vampire-village/users/`).once('value').then((snapshot)=>{
+      console.log(snapshot.val());
+    })
   }
 }

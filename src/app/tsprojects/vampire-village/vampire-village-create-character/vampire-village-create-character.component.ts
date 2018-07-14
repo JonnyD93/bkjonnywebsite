@@ -32,6 +32,7 @@ export class VampireVillageCreateCharacterComponent implements OnInit {
     this.account.characters.push(this.character);
     this.account.displayName = this.characterDisplayed.displayName;
     this.accountService.createAccount(this.account);
+
   }
 
 }
