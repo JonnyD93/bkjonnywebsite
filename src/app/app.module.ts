@@ -13,7 +13,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './home/home.component';
 import { GiveawayWheelComponent } from './tsprojects/giveaway-wheel/giveaway-wheel.component';
 import { TicTacToeComponent } from './tic-tac-toe/tic-tac-toe.component';
-import { BlogCreationComponent } from './admin/blog-creation-page/blog-creation-page.component';
+import { AdminCreateBlogPostComponent } from './admin/admin-create-blog-post/admin-create-blog-post.component';
 import { AboutMeComponent } from './about-me/about-me.component';
 
 // Vampire Village
@@ -30,12 +30,14 @@ import { ClassportfolioComponent } from './classportfolio/classportfolio.compone
 import {EffectsService} from "./tsprojects/vampire-village/services/effects.service";
 import {AccountService} from "./tsprojects/vampire-village/services/account.service";
 import { VampireVillageCreateCharacterComponent } from './tsprojects/vampire-village/vampire-village-create-character/vampire-village-create-character.component';
+import { AdminSignInComponent } from './admin/admin-sign-in/admin-sign-in.component';
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'about', component: AboutMeComponent },
   { path: 'classportfolio', component: ClassportfolioComponent },
-  { path: 'blog-creation-page', component: BlogCreationComponent },
+  { path: 'blog-creation-page', component: AdminCreateBlogPostComponent },
+  { path: 'blog-creation-page', component: AdminSignInComponent },
   { path: 'giveaway-wheel', component: GiveawayWheelComponent },
   { path: 'snake', component: SnakeComponent },
   { path: 'tic-tac-toe', component: TicTacToeComponent },
@@ -63,7 +65,7 @@ firebase.initializeApp(config);
     LayoutComponent,
     // Pages of Website Below
     AboutMeComponent,
-    BlogCreationComponent,
+    AdminCreateBlogPostComponent,
     GiveawayWheelComponent,
     HomeComponent,
     SnakeComponent,
@@ -74,7 +76,8 @@ firebase.initializeApp(config);
     VampireVillageSignUpComponent,
     VampireVillageInventoryComponent,
     ClassportfolioComponent,
-    VampireVillageCreateCharacterComponent
+    VampireVillageCreateCharacterComponent,
+    AdminSignInComponent
   ],
   imports: [
     BrowserModule,
