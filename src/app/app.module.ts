@@ -13,24 +13,17 @@ import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './home/home.component';
 import { GiveawayWheelComponent } from './tsprojects/giveaway-wheel/giveaway-wheel.component';
 import { TicTacToeComponent } from './tic-tac-toe/tic-tac-toe.component';
-import { AdminCreateBlogPostComponent } from './admin/admin-create-blog-post/admin-create-blog-post.component';
 import { AboutMeComponent } from './about-me/about-me.component';
 
-// Vampire Village
-import { VampireVillageComponent } from './tsprojects/vampire-village/vampire-village.component';
-import { AbilitiesService } from "./tsprojects/vampire-village/services/abilities.service";
-import { FakeDataService } from "./tsprojects/vampire-village/services/fakeData.service";
-import { VampireVillageHomeComponent } from './tsprojects/vampire-village/vampire-village-home/vampire-village-home.component';
-import { VampireVillageLoginComponent } from './tsprojects/vampire-village/vampire-village-login/vampire-village-login.component';
-import { VampireVillageSignUpComponent } from './tsprojects/vampire-village/vampire-village-sign-up/vampire-village-sign-up.component';
-import { VampireVillageInventoryComponent } from './tsprojects/vampire-village/vampire-village-inventory/vampire-village-inventory.component';
-import {SnakeComponent} from "./tsprojects/snake/snake.component";
-import {ItemsService} from "./tsprojects/vampire-village/services/items.service";
-import { ClassportfolioComponent } from './classportfolio/classportfolio.component';
-import {EffectsService} from "./tsprojects/vampire-village/services/effects.service";
-import {AccountService} from "./tsprojects/vampire-village/services/account.service";
-import { VampireVillageCreateCharacterComponent } from './tsprojects/vampire-village/vampire-village-create-character/vampire-village-create-character.component';
+// Admin Pages
 import { AdminSignInComponent } from './admin/admin-sign-in/admin-sign-in.component';
+import { AdminCreateBlogPostComponent } from './admin/admin-create-blog-post/admin-create-blog-post.component';
+
+// ts Projects
+import { SnakeComponent } from "./tsprojects/snake/snake.component";
+import { ClassportfolioComponent } from './classportfolio/classportfolio.component';
+
+//Services
 import {AdminService} from "./admin/admin.service";
 
 const appRoutes: Routes = [
@@ -42,12 +35,6 @@ const appRoutes: Routes = [
   { path: 'giveaway-wheel', component: GiveawayWheelComponent },
   { path: 'snake', component: SnakeComponent },
   { path: 'tic-tac-toe', component: TicTacToeComponent },
-  { path: 'vampire-village', component: VampireVillageComponent },
-  { path: 'vampire-village/home', component: VampireVillageHomeComponent },
-  { path: 'vampire-village/signup', component: VampireVillageSignUpComponent },
-  { path: 'vampire-village/login', component: VampireVillageLoginComponent },
-  { path: 'vampire-village/inventory', component: VampireVillageInventoryComponent },
-  { path: 'vampire-village/create-character', component: VampireVillageCreateCharacterComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full'},
   { path: '**', component: HomeComponent }
 ];
@@ -71,13 +58,7 @@ firebase.initializeApp(config);
     HomeComponent,
     SnakeComponent,
     TicTacToeComponent,
-    VampireVillageComponent,
-    VampireVillageHomeComponent,
-    VampireVillageLoginComponent,
-    VampireVillageSignUpComponent,
-    VampireVillageInventoryComponent,
     ClassportfolioComponent,
-    VampireVillageCreateCharacterComponent,
     AdminSignInComponent
   ],
   imports: [
@@ -86,7 +67,7 @@ firebase.initializeApp(config);
     HttpModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [AbilitiesService, AccountService, AdminService, FakeDataService, ItemsService, EffectsService, Location, {provide: LocationStrategy, useClass: HashLocationStrategy}],
+  providers: [AdminService, Location, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
