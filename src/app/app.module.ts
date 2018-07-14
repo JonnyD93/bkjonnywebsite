@@ -31,13 +31,14 @@ import {EffectsService} from "./tsprojects/vampire-village/services/effects.serv
 import {AccountService} from "./tsprojects/vampire-village/services/account.service";
 import { VampireVillageCreateCharacterComponent } from './tsprojects/vampire-village/vampire-village-create-character/vampire-village-create-character.component';
 import { AdminSignInComponent } from './admin/admin-sign-in/admin-sign-in.component';
+import {AdminService} from "./admin/admin.service";
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'about', component: AboutMeComponent },
   { path: 'classportfolio', component: ClassportfolioComponent },
-  { path: 'blog-creation-page', component: AdminCreateBlogPostComponent },
-  { path: 'blog-creation-page', component: AdminSignInComponent },
+  { path: 'admin/create-post', component: AdminCreateBlogPostComponent },
+  { path: 'admin/signin', component: AdminSignInComponent },
   { path: 'giveaway-wheel', component: GiveawayWheelComponent },
   { path: 'snake', component: SnakeComponent },
   { path: 'tic-tac-toe', component: TicTacToeComponent },
@@ -85,7 +86,7 @@ firebase.initializeApp(config);
     HttpModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [AbilitiesService, AccountService, FakeDataService, ItemsService, EffectsService, Location, {provide: LocationStrategy, useClass: HashLocationStrategy}],
+  providers: [AbilitiesService, AccountService, AdminService, FakeDataService, ItemsService, EffectsService, Location, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

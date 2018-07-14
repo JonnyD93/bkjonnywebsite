@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import * as firebase from "firebase";
+import {AdminService} from "../admin.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-admin-sign-in',
@@ -7,9 +10,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminSignInComponent implements OnInit {
 
-  constructor() { }
+  email: string;
+  password: string;
+  error: string;
+
+  constructor(private adminService: AdminService, private router: Router) {
+
+  }
 
   ngOnInit() {
   }
-
+  submit(){
+    if(this.email != undefined && this.password != undefined) {
+      this.adminService.signUp(this.email,this.password,()=>this.router.navigate(['vampire-village/home']),
+        (error)=>{
+          this.error = error.message;
+        });
+    }
+  }
 }
