@@ -4,6 +4,7 @@ import {appendChild} from "@angular/core/src/render3/node_manipulation";
 import * as firebase from "firebase";
 import {until} from "selenium-webdriver";
 import titleContains = until.titleContains;
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -12,88 +13,61 @@ import titleContains = until.titleContains;
 })
 export class HomeComponent implements OnInit, AfterViewInit {
 
-  activePosts: { title: string, date: string, content: string, images: string[], embedded: string[] } [] = []; //Active Posts on Page
-  pageIndex: number; //The Page we are On
-  amtPostsShown: number = 5; //The Amount of Posts Shown on Each Page
-  NumOfPages: number[] = []; // The Amount of Pages to choose from
-  database: any;
-  Posts: { title: string, date: string, content: string, images: string[], embedded: string[] }[] = []; //All Posts on the Database
+  count: any = 0;
+  hasScrolled : boolean;
+  waitPeriod : boolean;
+  projects: any = [
+    {img: "/assets/images/backgrounds/Yang_Bg3.png", desc: "One of the few places I post updates about what current projects, and progress on these projects is underway.", projectName: "Blog",router: 'blog'},
+    {img: "src", desc: "A project in which i built form the ground up", projectName: "Unity Skill Sheets",router: 'projects/unitySS'},
+    {img: "src", desc: "", projectName: "Cameron Photography", router: ''},
+    {img: "src", desc: "", projectName: "Vampire Village", router: ''},
+    {img: "src", desc: "", projectName: "Ansleigh Photography", router: ''},
+    {img: "src", desc: "", projectName: "Todo List", router: ''},
+    {img: "src", desc: "", projectName: "Giveaway wheel", router: ''}];
 
-  constructor() {
-    this.database = firebase.database();
-    this.database.ref('blog').once('value').then((snapshot) => {
-      for (var key in snapshot.val()) {
-        this.Posts.splice(0, 0, {
-          title: snapshot.val()[key].title,
-          date: this.formatDate(snapshot.val()[key].date),
-          content: snapshot.val()[key].content,
-          images: snapshot.val()[key].images,
-          embedded: snapshot.val()[key].embedded
-        });
-        console.log(this.Posts);
-      }
-      this.updatePage();
-    });
-
-    this.pageIndex = 0; // The page index is the page we are on.
-    this.updatePage();
+  constructor(private router: Router) {
+    this.hasScrolled = false;
     window['$'](document).ready(()=>{
       window['$']('.parallax').parallax();
+      let xPos, yPos;
+      window['$'](document).mousemove((e) => {
+        xPos = ((4 * e.pageX) / 600) + 80;
+        yPos = ((4 * e.pageY) / 600) + 60;
+        window['$'](".title").css({"background-position": xPos + "%" + yPos + "%"});
+      });
     });
+
   }
 
   ngOnInit() {
-   window['$']('.parallax').parallax();
+    window['$'] (document).ready(() => {
+      window['$']('.parallax').parallax();
+    });
+
   }
 
   ngAfterViewInit() {
+    let interval = setInterval(()=> {
+      if(this.count <= 1000) {
+        this.count++;
+        if (this.count > 1000) {
+          this.waitPeriod = true;
+        }
+      }
+      if(!this.hasScrolled) {
+        window.onscroll = (e) => {
+          this.hasScrolled = true;
+          for (let i = 0; i < document.getElementsByTagName("li").length; i++) {
+            document.getElementsByTagName("li").item(i).style.marginBottom = Math.floor(Math.random() * (12 - 10 + 1) + 10) + 'px';
+          }
+        }
+      } else {
+        clearInterval(interval);
+      }
+    },10);
+  }
+  openModal(project){
 
-  }
-
-  updatePage() {
-    this.activePosts = [];
-    for (let i = (this.pageIndex * this.amtPostsShown); i < this.Posts.length && i < (this.amtPostsShown + (this.pageIndex * this.amtPostsShown)); i++) {
-      this.activePosts.push(this.Posts[i]);
-    }
-    this.checkNumOfPages();
-  }
-
-  checkNumOfPages() {
-    this.NumOfPages = [];
-    for (let i = 0; i < this.Posts.length / this.amtPostsShown; i++)
-      this.NumOfPages.push(i);
-  }
-  checkActivePage(index){
-    if(this.pageIndex===index){
-      return '#7bc9ff';
-    }
-    return 'white';
-  }
-  changePage(Right: boolean) {
-    if (Right)
-      this.pageIndex++;
-    else {
-      if (this.pageIndex - 1 < 0)
-        this.pageIndex = 0;
-      else
-        this.pageIndex--;
-    }
-    this.updatePage();
-  }
-  changeLastPage(Right: boolean) {
-    if (Right)
-      this.pageIndex = this.NumOfPages[this.NumOfPages.length-1];
-    else {
-      this.pageIndex = 0;
-    }
-    this.updatePage();
-  }
-  formatDate(string) {
-    let date: Date = new Date(string);
-    return (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
-  }
-
-  updateEmbedded(url: string, id: number, id2: number) {
-    document.getElementById('embedded' + id + '' + id2).innerHTML = url;
+    this.router.navigate([`${project.router}`]);
   }
 }

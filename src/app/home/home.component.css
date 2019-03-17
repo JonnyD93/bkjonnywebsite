@@ -1,95 +1,102 @@
-@keyframes slideInFromLeft {
-  0% {
-    opacity:0;
-    transform: translateY(-100%);
-  }
-  40%{
-    opacity: 0;
-  }
-  80%{
-    transform: translateY(0%);
-  }
-  90%{
-    transform: translateY(1%);
-  }
-  100% {
-    -webkit-animation-fill-mode:forwards;
-    -moz-animation-fill-mode:forwards;
-    animation-fill-mode:forwards;
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.card {
-  opacity: 0;
-  border-radius: 16px;
-  animation: 1s ease-out slideInFromLeft forwards;
-}
-iframe{
-  alignment: center;
-}
-li{
-  background: white;
-  border-radius: 25px
-}
-li.active{
-  background-color: black;
-  border-radius: 25px;
-}
-.body,height{
-  height: 100%;
-}
-.btn{
-  background-color: white !important;
-  color: black;
-  text-transform: none;
-}
-.card-content{
-  margin-top: 16px;
-  padding-top: 0px;
-}
+i{
 
-.card-title{
-  border-radius: 16px;
-  padding-top: 0px;
-  padding-left: 16px;
-  padding-bottom: -32px;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 32px;
-  color: #FFFFFF;
-  background: #5388ab;
-  box-shadow: 0px 2px 4px grey;
+  border-radius: 100%;
+  background-color: rgba(100,100,100,75%);
+  -webkit-animation: bounce 1s infinite;
+  animation: bounce 1s infinite;
+  position: absolute;
+  margin-right: 15vw;
+  top: 85vh;
+  font-size: 25px;
+  z-index: 1;
+
 }
-.header {
-  font-family: 'Open Sans', sans-serif;
-  color: hsl(0, 0%, 100%);
-  text-decoration: none;
-  font-size: 72px;
-  letter-spacing: -3px;
-  line-height: 1;
-  text-shadow: hsl(0, 0%, 00%) 3px 2px 0;
+.parallax-container {
+  margin-top: 15vh;
   position: relative;
-  text-underline: #000000;
 }
-.header-container{
-  margin-top: 100px;
+.parallax-container > div{
+  background-color: #00acc1;
+  border-radius: 10px;
+  width: 80vw;
+  height: 90px;
+  padding: 16px;
+  margin-bottom: 10px;
+  left: 9%;
+  position: relative;
+  text-align: center;
+  color: rgba(0,0,0,20%);
+  font-size: xx-large;
+  cursor: pointer;
+}
+.parallax-container > div:hover{
+  display: block;
+  text-align: center;
+  background-image: none;
+  color: rgba(255,255,255,0);
+  opacity: 1;
+  transition: 1s;
+}
+.parallax-container > div > span {
+  opacity: 0;
+  transition:  3s;
+  position: relative;
+  display: flex;
+  padding: 0;
+  bottom: 50px;
+  font-size: large;
+}
+.parallax-container > div:hover > span {
+  opacity: 1;
+  color: white;
+}
+.container {
+  width: 100%;
+}
+.self-img {
+  width: 40vw;
+  border-radius: 64px;
+  position: relative;
+  left: 30%;
+  top: 0;
 }
 
-
-.image {
-  margin: auto;
-  max-width: 256px;
-  max-height: 256px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-.parallax-container{
-  border-bottom-left-radius: 5% !important;
-  border-bottom-right-radius: 5% !important;
-}
-#date {
-  padding-right: 16px;
+.container {
+  position: absolute;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 65%;
+  height: 120%;
 }
 
+.title {
+  font-weight: 800;
+  color: transparent;
+  font-size: 120px;
+  background: url("/assets/images/backgrounds/Yang_Bg2.png") repeat;
+  background-position: 20% 60%;
+  -webkit-background-clip: text;
+  position: relative;
+  text-align: center;
+  line-height: 90px;
+  letter-spacing: -8px;
+  text-shadow: rgba(40,50,50,20%) 1px 0px 10px;
+}
 
+.subtitle {
+  display: block;
+  text-align: center;
+  text-transform: uppercase;
+  padding-top: 10px;
+}
+@keyframes bounce {
+  0%,100% {
+    transform: translate(0px,0px);
+  }
+
+  20%{
+    transform: translate(0,20px);
+  }
+}

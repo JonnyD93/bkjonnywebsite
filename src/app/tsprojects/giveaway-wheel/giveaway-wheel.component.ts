@@ -132,22 +132,19 @@ export class GiveawayWheelComponent implements AfterViewInit {
       // Draws each individual segment of the Wheel
       drawSegment(canvas, context, data, i) {
           context.save();
-          const cenX = Math.floor(canvas.width / 2);
-          const cenY = Math.floor(canvas.height / 2);
-          const rad = Math.floor(canvas.width / 2);
-
-          const sAngle = this.degToRad(this.sumTo(data, i));
-          const arcSize = this.degToRad(data[i]);
-          const eAngle = sAngle + arcSize;
+          const cenX = Math.floor(canvas.width / 2),
+           cenY = Math.floor(canvas.height / 2),
+           rad = Math.floor(canvas.width / 2),
+           sAngle = this.degToRad(this.sumTo(data, i)),
+           arcSize = this.degToRad(data[i]),
+           eAngle = sAngle + arcSize;
 
           context.beginPath();
           context.moveTo(cenX, cenY);
           context.arc(cenX, cenY, rad, sAngle, eAngle, false);
           context.closePath();
-
           context.fillStyle = this.colorSwitch();
           context.fill();
-
           context.restore();
 
           this.drawSegmentLabel(canvas, context, data, i);

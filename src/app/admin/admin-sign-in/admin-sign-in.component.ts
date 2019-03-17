@@ -15,7 +15,6 @@ export class AdminSignInComponent implements OnInit {
   error: string;
 
   constructor(private adminService: AdminService, private router: Router) {
-
   }
 
   ngOnInit() {

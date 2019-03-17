@@ -8,11 +8,11 @@ import {AfterViewInit, Component} from '@angular/core';
 export class TicTacToeComponent implements AfterViewInit {
 
   board: number[];
-
+  players: {player1: string, player2: string};
   turn = false;
-  o: any = {health: 5};
   last10: any = [];
   last10boards: any = [];
+  namesModel: boolean = true;
 
   ngAfterViewInit() {
     document.body.style.backgroundColor = '#ffffff';
@@ -20,7 +20,9 @@ export class TicTacToeComponent implements AfterViewInit {
   }
 
   constructor() {
-    this.resetBoard();/*
+    this.players.player1 = "";
+    this.players.player2 = "";
+    /*
     if (JSON.parse(localStorage.getItem('last10Winners')) == null) {
       this.last10 = [];
     } else {
@@ -31,6 +33,23 @@ export class TicTacToeComponent implements AfterViewInit {
     } else {
       this.last10boards = JSON.parse(localStorage.getItem('last10Boards'));
     }*/
+  }
+
+  setNames(){
+    if(this.players.player1 == '') {
+    this.players.player1 = "Player 1";
+    }
+    if(this.players.player2 == ''){
+    this.players.player2 = "Player 2";
+    }
+  }
+  toggleNamesModel(){
+    this.namesModel = !this.namesModel;
+  }
+  startGame(){
+    this.setNames();
+    this.toggleNamesModel();
+    this.resetBoard();
   }
   resetBoard() {
     this.board = [0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -61,7 +80,7 @@ export class TicTacToeComponent implements AfterViewInit {
     if (this.board[index] === 0) {
       this.board[index] = this.turn ? 2 : 1;
       if (this.checkWin(this.turn ? 2 : 1)) {
-        this.setLast10('Player ' + (this.turn ? 2 : 1) + ' Won!');
+        this.setLast10(this.players[this.turn ? 0 : 1] + (this.turn ? 2 : 1) + ' Won!');
         this.setLast10Boards();
         this.resetBoard();
         console.log(this.last10boards);

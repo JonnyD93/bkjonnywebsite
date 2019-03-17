@@ -25,10 +25,13 @@ import { ClassportfolioComponent } from './classportfolio/classportfolio.compone
 
 //Services
 import {AdminService} from "./admin/admin.service";
+import { BlogComponent } from './blog/blog.component';
+import { ResumeComponent } from './resume/resume.component';
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'about', component: AboutMeComponent },
+  { path: 'blog', component: BlogComponent },
   { path: 'classportfolio', component: ClassportfolioComponent },
   { path: 'admin/create-post', component: AdminCreateBlogPostComponent },
   { path: 'admin/signin', component: AdminSignInComponent },
@@ -59,7 +62,9 @@ firebase.initializeApp(config);
     SnakeComponent,
     TicTacToeComponent,
     ClassportfolioComponent,
-    AdminSignInComponent
+    AdminSignInComponent,
+    BlogComponent,
+    ResumeComponent
   ],
   imports: [
     BrowserModule,

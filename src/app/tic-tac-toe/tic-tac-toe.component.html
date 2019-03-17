@@ -1,3 +1,19 @@
+<div *ngIf="namesModel" class="model-names-wrapper">
+<div class="model-names">
+  <div id="names">
+    <div class="input-field z-depth-1">
+      <input id="player1" type="text" class="validate">
+      <label for="player1">Player 1's Name</label>
+    </div>
+    <div class="input-field z-depth-1">
+      <input id="player2" type="text" class="validate">
+      <label for="player2">Player 2's Name</label>
+    </div>
+  </div>
+  <div class="btn-floating waves-effect" (click)="startGame()">Start</div>
+</div>
+</div>
+
 <div class="container">
   <div class="row">
     <div class="card col s8 offset-s2 ">
@@ -10,50 +26,7 @@
             </div>
           </div>
         </div>
-
         <span *ngFor="let item of board; let i = index" class="board col s4 center-align" (click)="select(i)">{{['', 'x', 'o'][item]}}</span>
-      </div>
-      <div class="card" style="margin-top: 450px">
-        <div class="card-tabs">
-          <ul class="tabs tabs-fixed-width">
-            <li  class="tab hidden"><a  href="#last-game">Last Game</a></li>
-            <li class="tab"><a class="active" href="#names">Names</a></li>
-            <li class="tab hidden"><a href="#last-ten-games" >Last 10 Games:</a></li>
-          </ul>
-          <div class="card-content grey lighten-4">
-            <div id="last-game" class="hidden">
-              <h4>Last Game: {{last10[0]}}</h4>
-              <div class="card">
-                <div class="card-content grey lighten-3">
-                  <span *ngFor="let item of last10boards[0];" class="board-prev col s4 center-align"> {{['', 'x', 'o'][item]}}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div id="names">
-              <div class="input-field">
-                <input id="player1" type="text" class="validate">
-                <label for="player1">Player 1 [X]</label>
-              </div>
-              <div class="input-field">
-                <input id="player2" type="text" class="validate">
-                <label for="player2">Player 2 [O]</label>
-              </div>
-            </div>
-            <div id="last-ten-games"><!--
-              <div *ngFor="let item of last10boards; let i = index">
-                <h6>{{(i+1) + ') ' + last10[i]}}</h6>
-                <table>
-                  <tr>
-                    <td *ngFor="let item2 of last10boards[i]" style="border: 1px dotted black; font-size: 10px">
-                      {{['', 'x', 'o'][item2]}}
-                    </td>
-                  </tr>
-                </table>
-              </div>!-->
-
-          </div>
-        </div>
       </div>
     </div>
   </div>
