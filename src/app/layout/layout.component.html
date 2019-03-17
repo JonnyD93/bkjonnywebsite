@@ -6,10 +6,24 @@
     </ul>
   </div>
   <li><a *ngFor="let link of links" [ngClass]="{active: link.active}" (click)="navigation(links,link.route, link.elementId)"><i class="material-icons">{{link.i}}</i><div class="custom-underline">{{link.name}}</div></a></li>
-  <!--<li><a class="dropdown-trigger" data-target="dropdown1"><i class="material-icons">menu</i>TS Projects<i class="material-icons right">arrow_drop_down</i></a></li>-->
-  <li><a *ngFor="let link of linksDd" [ngClass]="{active: link.active}" (click)="navigation(linksDd,link.route, link.elementId)"><i class="material-icons">{{link.i}}</i><div class="custom-underline">{{link.name}}</div></a></li>
+  <!--<li><a class="dropdown-trigger" data-target="dropdown1"><i class="material-icons">menu</i>TS Projects<i class="material-icons right">arrow_drop_down</i></a></li>&ndash;&gt;-->
+  <!--<li><a *ngFor="let link of linksDd" [ngClass]="{active: link.active}" (click)="navigation(linksDd,link.route, link.elementId)"><i class="material-icons">{{link.i}}</i><div class="custom-underline">{{link.name}}</div></a></li>-->
+<!--</nav>!&ndash;&gt;-->
+<ul id="dropdown1" class="dropdown-content">
+  <li><a href="#tic-tac-toe"><i class="material-icons">grid_on</i>Tic Tac Toe </a></li>
+  <li><a href="#giveaway-wheel"><i class="material-icons">slow_motion_video</i>Give Away Wheel</a></li>
+  <!--<li><a href="#snake"><i class="material-icons">show_chart</i>Snake</a></li>-->
+  <!--<li><a href="#vampire-village/login"><i class="material-icons">directions_walk</i>Vampire Village</a></li>-->
 </ul>
 <div class="btn-wrapper z-depth-1">
-
   <a *ngIf="isBtnActive" data-target="slide-out" (click)="isBtnActive = !isBtnActive" class="sidenav-trigger btn-floating waves-effect waves-light"><i class="material-icons">menu</i></a>
 </div><router-outlet></router-outlet>
+  <li ><a href="#home"><i class="material-icons">home</i>Home</a></li>
+  <li><a href="#about"><i class="material-icons">account_circle</i>About Me</a></li>
+  <!--<li><a href="#classportfolio"><i class="material-icons">create</i>English 1101</a></li>-->
+  <!--<li><a href="#tutorials"><i class="material-icons">ondemand_video</i>Tutorials</a></li>-->
+  <!--<li><a href="#blog-creation-page"><i class="material-icons">edit</i>Edit Blog</a></li>!-->
+  <li><a class="dropdown-trigger" data-target="dropdown1"><i class="material-icons">menu</i>TS Projects<i class="material-icons right">arrow_drop_down</i></a></li>
+</ul>
+<a href="#" data-target="slide-out" class="sidenav-trigger btn-floating waves-effect waves-light"><i class="material-icons">menu</i></a>
+<router-outlet></router-outlet>
