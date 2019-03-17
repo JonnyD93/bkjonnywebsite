@@ -25,7 +25,7 @@ export class LayoutComponent implements OnInit, AfterViewInit {
       Object.assign(this.linksDd.find((link) => link.route === window.location.hash.substring(2)), {active: true});
     }
   }
-resetLinks = (links) => links.map(link => Object.assign(link, {active: false}));
+  resetLinks = (links) => links.map(link => Object.assign(link, {active: false}));
   navigation = (links,route, elementId?) => {
     this.resetLinks(this.links);
     this.resetLinks(this.linksDd);
